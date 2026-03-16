@@ -1,0 +1,92 @@
+version: "3"
+services:
+  db:
+    container_name: postgres
+    image: postgres:16
+    env_file:
+      - .env.db
+    ports:
+      - "5432:5432"
+    networks:
+      - net_app
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    container_name: app
+    build: .
+    env_file:
+      - .env.app
+    ports:
+      - "8000:8000"
+    # volumes:
+    #   - ./dist:/project/dist
+    networks:
+      - net_app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  nginx:
+    container_name: nginx
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+    - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    - ./dist:/usr/share/nginx/html:ro
+    depends_on:
+      app:
+        condition: service_started
+    networks:
+      - net_app
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:v2.35.0
+    expose:
+      - 9090
+    depends_on:
+      - app
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+
+  loki:
+    container_name: loki
+    image: grafana/loki:v2.8.1
+    restart: always
+    volumes:
+      - ./loki-config.yaml:/etc/loki/local-config.yaml
+    expose:
+      - 3100
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    env_file:
+      - .env.grafana
+    depends_on:
+      - prometheus
+      # - loki
+    ports:
+      - "3000:3000"
+    # volumes:
+    #   - ./grafana/provisioning/:/etc/grafana/provisioning/
+    #   - grafana_storage:/var/lib/grafana
+
+networks:
+  net_app:
+
+volumes:
+  postgres_data:
+  prometheus_data:
+  grafana_storage:

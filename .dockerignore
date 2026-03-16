@@ -1,0 +1,15 @@
+Dockerfile*
+docker-compose.yml
+.git
+.gitignore
+*.md
+__pycache__
+*.pyc
+db
+tests
+upload
+.env.template
+dist
+nginx
+.vscode
+postgres_data

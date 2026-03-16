@@ -1,0 +1,16 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'django'
+
+    dns_sd_configs:
+      - names: ['app']
+        port: 8000
+        type: A
+        refresh_interval: 5s
