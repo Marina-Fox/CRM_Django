@@ -26,6 +26,7 @@ services:
       - "8000:8000"
     # volumes:
     #   - ./dist:/project/dist
+    #   - ./dist:/usr/share/nginx/html
     networks:
       - net_app
     depends_on:
