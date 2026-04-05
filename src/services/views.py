@@ -41,6 +41,11 @@ class ServicesUpdate(UpdateView):
     Редактирование услуги
     """
     model = Services
+    form_class = ServicesForm
+    template_name = "services/services_edit.html"
+
+    def get_success_url(self) -> str:
+        return reverse_lazy("services_detail", kwargs={"pk": self.object.pk})
 
 
 class ServicesDelete(DeleteView):
@@ -48,3 +53,5 @@ class ServicesDelete(DeleteView):
     Удаление услуги
     """
     model = Services
+    template_name = "services/services_delete.html"
+    success_url = reverse_lazy("services_list")
