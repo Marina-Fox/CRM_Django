@@ -13,5 +13,5 @@ RUN poetry install --without dev --no-root
 
 COPY . .
 
-CMD ["uvicorn", "crm.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
-# python manage.py migrate && python manage.py collectstatic --noinput &&
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "crm.wsgi:application"]
+# ["uvicorn", "crm.asgi:application", "--host", "0.0.0.0", "--port", "8000"]

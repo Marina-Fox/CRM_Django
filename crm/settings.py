@@ -86,8 +86,8 @@ TEMPLATES = [
     },
 ]
 
-# WSGI_APPLICATION = 'crm.wsgi.application'
-ASGI_APPLICATION = 'crm.asgi.application'
+WSGI_APPLICATION = 'crm.wsgi.application'
+# ASGI_APPLICATION = 'crm.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
