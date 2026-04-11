@@ -17,16 +17,23 @@ jobs:
       matrix:
         python-version: [3.12]
 
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: ${{ secrets.DB_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          POSTGRES_DB: crm_db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
     steps:
     - uses: actions/checkout@v4
-    - name: Set up PostgreSQL
-      uses: actions/setup-pg@v4
-      with:
-        postgres-version: '16'
-        database: 'crm_db'
-    - name: Set up Environment Variables for DB
-      run: |
-        echo "DATABASE_URL=postgres://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@$PG_HOST:$PG_PORT/$PG_DATABASE" >> $GITHUB_ENV
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
       with:
@@ -34,9 +41,9 @@ jobs:
         cache: 'pip'
     - name: Install Dependencies
       run: |
-        python -m pip install "poetry-core>=1.0.0"
+        python -m pip install "poetry>=2.0.0"
         poetry install --with dev --no-root
-    - name: Проверка стиля кода (Ruff)
+    - name: Ruff
       run: |
         poetry run ruff check . --exit-zero --no-fix
     - name: Run Tests
