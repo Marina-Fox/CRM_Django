@@ -37,13 +37,6 @@ jobs:
       uses: actions/checkout@v4
       with:
         ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-    # - name: Set up SSH Key
-    #   uses: webfactory/ssh-agent@v0.7.0
-    #   with:
-    #     ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-    # - uses: actions/checkout@v4
-    # - name: Add GitHub to known hosts
-    #   run: ssh-keyscan github.com >> ~/.ssh/known_hosts
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
       with:
@@ -57,5 +50,7 @@ jobs:
       run: |
         poetry run ruff check . --exit-zero --no-fix
     - name: Run Tests
+      env:
+        DATABASE_URL: postgres://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@localhost:5432/crm_db
       run: |
         poetry run python manage.py test
