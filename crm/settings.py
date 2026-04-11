@@ -21,6 +21,7 @@ load_dotenv(dotenv_path=".env.db", override=True)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+IS_CI = bool(os.environ.get("CI")) or bool(os.environ.get("GITHUB_ACTIONS"))
 
 
 # Quick-start development settings - unsuitable for production
@@ -189,6 +190,11 @@ LOGGING = {
             "handlers": ["file"],
             "level": LOGLEVEL,
             "propagate": True,
+        },
+        "ci": {
+            "handlers": ["console"],
+            "level": LOGLEVEL,
+            "propagate": False,
         },
         # 'log_loki': {
         #     'handlers': ['loki'],
