@@ -17,6 +17,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: Set up PostgreSQL
+      uses: actions/setup-pg@v4
+      with:
+        postgres-version: '16'
+        database: 'crm_db'
+    - name: Set up Environment Variables for DB
+      run: |
+        echo "DATABASE_URL=postgres://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@$PG_HOST:$PG_PORT/$PG_DATABASE" >> $GITHUB_ENV
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
       with:
