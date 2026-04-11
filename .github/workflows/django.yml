@@ -1,4 +1,6 @@
 name: Django CI
+permissions:
+  actions: read 
 
 on:
   push:
