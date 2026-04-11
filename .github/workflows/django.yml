@@ -33,14 +33,12 @@ jobs:
           - 5432:5432
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-        persist-credentials: false
     - name: Set up SSH Key
       uses: webfactory/ssh-agent@v0.7.0
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+    - uses: actions/checkout@v4
+
     - name: Add GitHub to known hosts
       run: ssh-keyscan github.com >> ~/.ssh/known_hosts
     - name: Set up Python ${{ matrix.python-version }}
