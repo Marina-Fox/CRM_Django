@@ -20,7 +20,7 @@ class ServicesCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     """
     Создание новой услуги
     """
-    permission_required = ["services.add_services", "services.view_services"]
+    permission_required = ["services.add_services"]
     login_url = "/admin/login/"
     model = Services
     form_class = ServicesForm
@@ -51,7 +51,7 @@ class ServicesUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     template_name = "services/services_edit.html"
 
     def get_success_url(self) -> str:
-        return reverse_lazy("services_detail", kwargs={"pk": self.object.pk})
+        return reverse_lazy("services:services_detail", kwargs={"pk": self.object.pk})
 
 
 class ServicesDelete(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
@@ -62,4 +62,4 @@ class ServicesDelete(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
     login_url = "/admin/login/"
     model = Services
     template_name = "services/services_delete.html"
-    success_url = reverse_lazy("services_list")
+    success_url = reverse_lazy("services:services_list")
