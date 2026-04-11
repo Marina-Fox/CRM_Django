@@ -33,14 +33,10 @@ jobs:
           - 5432:5432
 
     steps:
-    - name: Checkout with SSH
-      uses: webfactory/ssh-agent@v0.7.0
+    - name: Checkout
+      uses: actions/checkout@v4
       with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-        shell: bash
-        run: |
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          git clone git@github.com:Marina-Fox/CRM_Django.git $GITHUB_WORKSPACE
+        ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
     # - name: Set up SSH Key
     #   uses: webfactory/ssh-agent@v0.7.0
     #   with:
