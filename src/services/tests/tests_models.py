@@ -6,11 +6,11 @@ from django.core.exceptions import ValidationError
 from ..models import Services
 
 
-
 class TestServicesModel(TestCase):
     """
     Тесты для модели Services.
     """
+
     def test_model_services_creation(self):
         "Проверка создания модели."
         service = Services.objects.create(

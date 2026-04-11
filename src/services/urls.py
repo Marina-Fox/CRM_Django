@@ -1,6 +1,12 @@
-from django.urls import include, path
+from django.urls import path
 
-from .views import ServicesList, ServicesCreate, ServicesDetail, ServicesUpdate, ServicesDelete
+from .views import (
+    ServicesList,
+    ServicesCreate,
+    ServicesDetail,
+    ServicesUpdate,
+    ServicesDelete,
+)
 
 app_name = "services"
 

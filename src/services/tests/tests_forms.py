@@ -8,6 +8,7 @@ class TestServicesForm(TestCase):
     """
     Тесты для формы ServicesForm.
     """
+
     def test_services_valid_form(self):
         "Тестирование валидной формы ServicesForm."
         data = {

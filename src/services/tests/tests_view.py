@@ -1,18 +1,19 @@
 from decimal import Decimal
 from django.test import TestCase
 from django.urls import reverse
-from django.contrib.auth.models import User
-from django.contrib.auth.models import Permission
+from django.contrib.auth.models import User, Permission
 from django.contrib.contenttypes.models import ContentType
 
 
 from ..models import Services
+
 
 # Create your tests here.
 class TestServicesListView(TestCase):
     """
     Тесты для представленния ServicesList.
     """
+
     def setUp(self) -> None:
         self.service_1 = Services.objects.create(
             title="Title",
@@ -39,7 +40,9 @@ class TestServicesListView(TestCase):
         respons = self.client.get(self.url)
 
         self.assertEqual(respons.status_code, 200)
-        self.assertQuerySetEqual(respons.context["services"], [self.service_2, self.service_1], ordered=False)
+        self.assertQuerySetEqual(
+            respons.context["services"], [self.service_2, self.service_1], ordered=False
+        )
 
     def test_get_services_list_unauthorized(self):
         "Проверка перенаправления пользователя на страницу входа."
@@ -59,6 +62,7 @@ class TestServicesDetailView(TestCase):
     """
     Тесты для представленния ServicesDetail.
     """
+
     def setUp(self) -> None:
         self.service = Services.objects.create(
             title="Title",
@@ -101,6 +105,7 @@ class TestServicesCreateView(TestCase):
     """
     Тесты для представленния ServicesCreate.
     """
+
     def setUp(self) -> None:
         self.user = User.objects.create_user(username="test_user", password="pass")
         con_type = ContentType.objects.get_for_model(Services)
@@ -137,7 +142,9 @@ class TestServicesCreateView(TestCase):
         self.assertEqual(respons.status_code, 302)
 
         service = Services.objects.first()
-        self.assertRedirects(respons, reverse("services:services_detail", args=[service.pk]))
+        self.assertRedirects(
+            respons, reverse("services:services_detail", args=[service.pk])
+        )
 
     def test_get_services_create_unauthorized(self):
         "Проверка перенаправления пользователя на страницу входа."
@@ -157,6 +164,7 @@ class TestServicesUpdateView(TestCase):
     """
     Тесты для представленния ServicesUpdate.
     """
+
     def setUp(self) -> None:
         self.service = Services.objects.create(
             title="Title",
@@ -198,7 +206,9 @@ class TestServicesUpdateView(TestCase):
         self.assertEqual(respons.status_code, 302)
 
         service = Services.objects.first()
-        self.assertRedirects(respons, reverse("services:services_detail", args=[service.pk]))
+        self.assertRedirects(
+            respons, reverse("services:services_detail", args=[service.pk])
+        )
 
     def test_get_services_update_unauthorized(self):
         "Проверка перенаправления пользователя на страницу входа."
@@ -218,6 +228,7 @@ class TestServicesDeleteView(TestCase):
     """
     Тесты для представленния ServicesDelete.
     """
+
     def setUp(self) -> None:
         self.service = Services.objects.create(
             title="Title",
