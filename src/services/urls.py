@@ -2,7 +2,7 @@ from django.urls import include, path
 
 from .views import ServicesList, ServicesCreate, ServicesDetail, ServicesUpdate, ServicesDelete
 
-
+app_name = "services"
 
 urlpatterns = [
     path("", ServicesList.as_view(), name="services_list"),
