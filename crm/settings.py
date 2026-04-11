@@ -167,13 +167,13 @@ LOGGING = {
             "class": "logging.StreamHandler",
             "formatter": "verbose",
         },
-        "file": {
-            "class": "logging.handlers.RotatingFileHandler",
-            "filename": BASE_DIR / "logs/app.log",
-            "maxBytes": 1024 * 1024 * 5,
-            "backupCount": 3,
-            "formatter": "verbose",
-        },
+        # "file": {
+        #     "class": "logging.handlers.RotatingFileHandler",
+        #     "filename": BASE_DIR / "logs/app.log",
+        #     "maxBytes": 1024 * 1024 * 5,
+        #     "backupCount": 3,
+        #     "formatter": "verbose",
+        # },
         # 'loki': {
         #     'class': 'python_loki.LokiHandler',
         #     'url': os.getenv('LOKI_ENDPOINT'),
@@ -186,11 +186,11 @@ LOGGING = {
         "level": LOGLEVEL,
     },
     "loggers": {
-        "log_file": {
-            "handlers": ["file"],
-            "level": LOGLEVEL,
-            "propagate": True,
-        },
+        # "log_file": {
+        #     "handlers": ["file"],
+        #     "level": LOGLEVEL,
+        #     "propagate": True,
+        # },
         "ci": {
             "handlers": ["console"],
             "level": LOGLEVEL,
