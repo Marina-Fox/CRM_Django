@@ -11,7 +11,7 @@
         <ul class="list-group">
             {% for ad in ads %}
             <li class="list-group-item list-group-item-light d-flex justify-content-between">
-                <a href="/ads/{{ ad.pk }}" class="text-decoration-none link-dark">{{ ad.name }}</a>
+                <a href="/ads/{{ ad.pk }}" class="text-decoration-none link-dark">{{ ad.title }}</a>
                 <a href="/ads/{{ ad.pk }}/delete" class="btn btn-danger">Удалить</a>
             </li>
             {% endfor %}
