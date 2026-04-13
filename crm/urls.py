@@ -20,7 +20,9 @@ from django.urls import include, path
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("clients/", include("src.clients.urls")),
     path("services/", include("src.services.urls")),
+    path("ads/", include("src.ad_campaign.urls")),
+    path("clients/", include("src.clients.urls")),
+
     path("metrics/", include("django_prometheus.urls")),
 ]
