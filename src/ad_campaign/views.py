@@ -56,7 +56,7 @@ class AdvertisementUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateVie
     Редактирование рекламной кампании.
     """
 
-    permission_required = ["change_advertisement"]
+    permission_required = ["ad_campaign.change_advertisement"]
     login_url = "/admin/login/"
     model = Advertisement
     form_class = AdvertisementForm
@@ -71,7 +71,7 @@ class AdvertisementDelete(PermissionRequiredMixin, LoginRequiredMixin, DeleteVie
     Удаление рекламной кампании.
     """
 
-    permission_required = ["delete_advertisement"]
+    permission_required = ["ad_campaign.delete_advertisement"]
     login_url = "/admin/login/"
     model = Advertisement
     template_name = "ad_campaign/ads_delete.html"
