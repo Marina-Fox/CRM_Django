@@ -5,11 +5,13 @@ from ..models import Advertisement
 from ...services.models import Services
 from django.core.exceptions import ValidationError
 
+
 # Create your tests here.
 class TestAdvertisementModel(TestCase):
     """
     Тесты для модели Advertisement.
     """
+
     def test_model_advertisement_creation(self):
         "Проверка создания модели Advertisement."
         service = Services.objects.create(

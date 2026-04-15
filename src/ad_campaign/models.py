@@ -1,13 +1,18 @@
-
 from django.db import models
 from django.core.validators import MinValueValidator
 from decimal import Decimal
 from ..services.models import Services
+
+
 # Create your models here.
 class Advertisement(models.Model):
     title = models.CharField(verbose_name="Название", max_length=200)
-    service = models.ForeignKey(Services, verbose_name="Услуга", on_delete=models.CASCADE)
-    promotion_channel = models.CharField(verbose_name="Канал продвижения", max_length=200)
+    service = models.ForeignKey(
+        Services, verbose_name="Услуга", on_delete=models.CASCADE
+    )
+    promotion_channel = models.CharField(
+        verbose_name="Канал продвижения", max_length=200
+    )
     budget = models.DecimalField(
         verbose_name="Бюджет",
         max_digits=10,
