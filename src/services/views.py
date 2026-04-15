@@ -14,7 +14,9 @@ from .form import ServicesForm
 
 # Create your views here.
 class ServicesList(PermissionRequiredMixin, LoginRequiredMixin, ListView):
-    "Отображение списка услуг"
+    """
+    Отображение списка услуг.
+    """
 
     permission_required = ["services.view_services"]
     login_url = "/admin/login/"
@@ -26,7 +28,7 @@ class ServicesList(PermissionRequiredMixin, LoginRequiredMixin, ListView):
 
 class ServicesCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     """
-    Создание новой услуги
+    Создание новой услуги.
     """
 
     permission_required = ["services.add_services"]
@@ -36,12 +38,12 @@ class ServicesCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     template_name = "services/services_create.html"
 
     def get_success_url(self) -> str:
-        return reverse_lazy("services:services_detail", kwargs={"pk": self.object.pk})
+        return reverse_lazy("services:services_detail", args=[self.object.pk])
 
 
 class ServicesDetail(PermissionRequiredMixin, LoginRequiredMixin, DetailView):
     """
-    Информация о выбранной услуге
+    Информация о выбранной услуге.
     """
 
     permission_required = ["services.view_services"]
@@ -52,7 +54,7 @@ class ServicesDetail(PermissionRequiredMixin, LoginRequiredMixin, DetailView):
 
 class ServicesUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     """
-    Редактирование услуги
+    Редактирование услуги.
     """
 
     permission_required = ["services.change_services"]
@@ -62,7 +64,7 @@ class ServicesUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     template_name = "services/services_edit.html"
 
     def get_success_url(self) -> str:
-        return reverse_lazy("services:services_detail", kwargs={"pk": self.object.pk})
+        return reverse_lazy("services:services_detail", args=[self.object.pk])
 
 
 class ServicesDelete(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):

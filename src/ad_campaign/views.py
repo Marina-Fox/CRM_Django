@@ -48,3 +48,17 @@ class AdvertisementDetail(PermissionRequiredMixin, LoginRequiredMixin, DetailVie
     login_url = "/admin/login/"
     model = Advertisement
     template_name = "ad_campaign/ads_detail.html"
+
+
+class AdvertisementUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
+    """
+    Редактирование рекламной кампании.
+    """
+    permission_required = ["change_advertisement"]
+    login_url = "/admin/login/"
+    model = Advertisement
+    form_class = AdvertisementForm
+    template_name = "ad_campaign/ads_edit.html"
+
+    def get_success_url(self) -> str:
+        return reverse_lazy("ad_campaign:ad_detail", args=[self.object.pk])
