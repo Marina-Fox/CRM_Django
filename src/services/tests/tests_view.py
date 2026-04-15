@@ -256,7 +256,7 @@ class TestServicesDeleteView(TestCase):
         self.assertEqual(respons.status_code, 200)
         self.assertTemplateUsed(respons, "services/services_delete.html")
 
-    def test_delete_services_delete(self):
+    def test_delete_services(self):
         "Проверка удаления услуги."
         self.user.user_permissions.add(self.permis_del, self.permis_view)
         self.client.force_login(self.user)

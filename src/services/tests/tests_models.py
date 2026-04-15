@@ -12,7 +12,7 @@ class TestServicesModel(TestCase):
     """
 
     def test_model_services_creation(self):
-        "Проверка создания модели."
+        "Проверка создания модели Services."
         service = Services.objects.create(
             title="Title",
             description="descrip",
