@@ -37,4 +37,14 @@ class AdvertisementCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateVie
     template_name = "ad_campaign/ads_create.html"
 
     def get_success_url(self):
-        return reverse_lazy("ad_campaign:ad_list")
+        return reverse_lazy("ad_campaign:ad_detail", args=[self.object.pk])
+
+
+class AdvertisementDetail(PermissionRequiredMixin, LoginRequiredMixin, DetailView):
+    """
+    Информация о рекламной кампании.
+    """
+    permission_required = ["ad_campaign.view_advertisement"]
+    login_url = "/admin/login/"
+    model = Advertisement
+    template_name = "ad_campaign/ads_detail.html"
