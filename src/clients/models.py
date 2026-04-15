@@ -1,7 +1,7 @@
 from phonenumber_field.modelfields import PhoneNumberField
 
-
 from django.db import models
+
 from ..ad_campaign.models import Advertisement
 
 
