@@ -116,7 +116,7 @@ class TestAdvertisementCreate(TestCase):
 
         advertisement = Advertisement.objects.first()
         self.assertRedirects(
-            respons, reverse("ad_campaign:ad_list")
+            respons, reverse("ad_campaign:ad_detail", args=[advertisement.pk])
         )
 
     def test_get_advertisement_create_unauthorized(self):
@@ -133,7 +133,49 @@ class TestAdvertisementCreate(TestCase):
         self.assertEqual(respons.status_code, 403)
 
 
-# class TestAdvertisementDetail(TestCase):
-#     """
+class TestAdvertisementDetail(TestCase):
+    """
+    Тесты для представленния AdvertisementDetail.
+    """
+    def setUp(self) -> None:
+        self.service = Services.objects.create(
+            title="Title",
+            description="descrip",
+            cost=Decimal("500.00"),
+        )
+        self.ad_campaign = Advertisement.objects.create(
+            title="Test ad camp",
+            service=self.service,
+            promotion_channel="Test 1",
+            budget=Decimal("500.00"),
+        )
+        self.user = User.objects.create_user(username="test_user", password="pass")
+        con_type = ContentType.objects.get_for_model(Advertisement)
+        self.permis = Permission.objects.get(
+            codename="view_advertisement",
+            content_type=con_type,
+        )
+        self.url = reverse("ad_campaign:ad_detail", args=[self.ad_campaign.pk])
 
-#     """
+    def test_get_advertisement_detail(self):
+        "Проверка получения страницы деталей рекламной кампании."
+        self.user.user_permissions.add(self.permis)
+        self.client.force_login(self.user)
+        respons = self.client.get(self.url)
+
+        self.assertEqual(respons.status_code, 200)
+        self.assertTemplateUsed(respons, "ad_campaign/ads_detail.html")
+        self.assertEqual(respons.context["object"], self.ad_campaign)
+
+    def test_get_services_detail_unauthorized(self):
+        "Проверка перенаправления пользователя на страницу входа."
+        respons = self.client.get(self.url)
+        self.assertEqual(respons.status_code, 302)
+        self.assertRedirects(respons, f"/admin/login/?next={self.url}")
+
+    def test_get_services_detail_permis(self):
+        "Проверка, что пользователь без разрешения view_advertisement не может просмотреть детальную страницу рекламной кампании."
+        self.client.force_login(self.user)
+        respons = self.client.get(self.url)
+
+        self.assertEqual(respons.status_code, 403)
