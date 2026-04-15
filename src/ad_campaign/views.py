@@ -44,6 +44,7 @@ class AdvertisementDetail(PermissionRequiredMixin, LoginRequiredMixin, DetailVie
     """
     Информация о рекламной кампании.
     """
+
     permission_required = ["ad_campaign.view_advertisement"]
     login_url = "/admin/login/"
     model = Advertisement
@@ -54,6 +55,7 @@ class AdvertisementUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateVie
     """
     Редактирование рекламной кампании.
     """
+
     permission_required = ["change_advertisement"]
     login_url = "/admin/login/"
     model = Advertisement
@@ -62,3 +64,15 @@ class AdvertisementUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateVie
 
     def get_success_url(self) -> str:
         return reverse_lazy("ad_campaign:ad_detail", args=[self.object.pk])
+
+
+class AdvertisementDelete(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
+    """
+    Удаление рекламной кампании.
+    """
+
+    permission_required = ["delete_advertisement"]
+    login_url = "/admin/login/"
+    model = Advertisement
+    template_name = "ad_campaign/ads_delete.html"
+    success_url = reverse_lazy("ad_campaign:ad_list")
