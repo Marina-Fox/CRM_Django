@@ -12,6 +12,7 @@ class TestLeadModel(TestCase):
     """
     Тесты для модели Lead.
     """
+
     def test_model_lead_creation(self):
         "Проверка создания модели Lead."
         service = Services.objects.create(
