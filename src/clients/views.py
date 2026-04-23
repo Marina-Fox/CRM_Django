@@ -64,3 +64,15 @@ class LeadUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
 
     def get_success_url(self) -> str:
         return reverse_lazy("clients:clients_detail", args=[self.object.pk])
+
+
+class LeadDelete(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
+    """
+    Удаление потенциального клиента.
+    """
+
+    permission_required = ["clients.delete_lead"]
+    login_url = "/admin/login/"
+    model = Lead
+    template_name = "clients/leads_delete.html"
+    success_url = reverse_lazy("clients:clients_list")
