@@ -49,3 +49,18 @@ class LeadCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
 
     def get_success_url(self) -> str:
         return reverse_lazy("clients:clients_detail", args=[self.object.pk])
+
+
+class LeadUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
+    """
+    Редактирование потенциального клиента.
+    """
+
+    permission_required = ["clients.change_lead"]
+    login_url = "/admin/login/"
+    model = Lead
+    form_class = LeadForm
+    template_name = "clients/leads_edit.html"
+
+    def get_success_url(self) -> str:
+        return reverse_lazy("clients:clients_detail", args=[self.object.pk])
