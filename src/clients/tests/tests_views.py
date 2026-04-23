@@ -243,7 +243,7 @@ class TestLeadUpdate(TestCase):
             codename="change_lead",
             content_type=con_type,
         )
-        self.url = reverse("clients:client_update", args=[self.lead.pk])
+        self.url = reverse("clients:clients_update", args=[self.lead.pk])
 
     def test_get_lead_update(self):
         "Проверка получения формы для редактирования информации о потенциальном клиенте."
@@ -281,6 +281,75 @@ class TestLeadUpdate(TestCase):
 
     def test_get_lead_list_permis(self):
         "Проверка, что пользователь без разрешения change_lead не может изменить информацию у потенциального клиента."
+        self.client.force_login(self.user)
+        respons = self.client.get(self.url)
+
+        self.assertEqual(respons.status_code, 403)
+
+
+class TestLeadDelete(TestCase):
+    """
+    Тесты для представленния LeadDelete.
+    """
+
+    def setUp(self) -> None:
+        self.service = Services.objects.create(
+            title="Title",
+            description="descrip",
+            cost=Decimal("500.00"),
+        )
+        self.ad_campaign = Advertisement.objects.create(
+            title="Test ad camp",
+            service=self.service,
+            promotion_channel="Test 1",
+            budget=Decimal("500.00"),
+        )
+        self.lead = Lead.objects.create(
+            first_name="Test Name",
+            last_name="Test Last Name",
+            patronymic="Test Patron",
+            phone="+79456542656",
+            email="test@mail.com",
+            advertisement=self.ad_campaign,
+        )
+        self.user = User.objects.create_user(username="test_user", password="pass")
+        con_type = ContentType.objects.get_for_model(Lead)
+        self.permis_view = Permission.objects.get(
+            codename="view_lead",
+            content_type=con_type,
+        )
+        self.permis_del = Permission.objects.get(
+            codename="delete_lead",
+            content_type=con_type,
+        )
+        self.url = reverse("clients:clients_delete", args=[self.lead.pk])
+
+    def test_get_lead_delete(self):
+        "Проверка получения формы для удаления потенциального клиента."
+        self.user.user_permissions.add(self.permis_del)
+        self.client.force_login(self.user)
+        respons = self.client.get(self.url)
+
+        self.assertEqual(respons.status_code, 200)
+        self.assertTemplateUsed(respons, "clients/leads_delete.html")
+
+    def test_delete_lead(self):
+        "Проверка удаления потенциального клиента."
+        self.user.user_permissions.add(self.permis_del, self.permis_view)
+        self.client.force_login(self.user)
+        respons = self.client.delete(self.url)
+
+        self.assertEqual(respons.status_code, 302)
+        self.assertRedirects(respons, reverse("clients:clients_list"))
+
+    def test_get_advertisement_delete_unauthorized(self):
+        "Проверка перенаправления пользователя на страницу входа."
+        respons = self.client.get(self.url)
+        self.assertEqual(respons.status_code, 302)
+        self.assertRedirects(respons, f"/admin/login/?next={self.url}")
+
+    def test_get_advertisement_delete_permis(self):
+        "Проверка, что пользователь без разрешения delete_lead не может удалить потенциального клиента."
         self.client.force_login(self.user)
         respons = self.client.get(self.url)
 
