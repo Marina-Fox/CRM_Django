@@ -1,9 +1,10 @@
-from django.test import TestCase
 from decimal import Decimal
+
+from django.core.exceptions import ValidationError
+from django.test import TestCase
 
 from ..models import Advertisement
 from ...services.models import Services
-from django.core.exceptions import ValidationError
 
 
 # Create your tests here.
@@ -46,6 +47,7 @@ class TestAdvertisementModel(TestCase):
             promotion_channel="Интернет",
             budget=Decimal("10000.00"),
         )
+
         with self.assertRaises(ValidationError):
             advertisement.full_clean()
 

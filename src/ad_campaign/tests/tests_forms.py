@@ -11,7 +11,7 @@ class TestAdvertisementForm(TestCase):
     """
 
     def test_advertisement_valid_form(self):
-        "Тестирование валидной формы ServicesForm."
+        "Тестирование валидной формы."
         service = Services.objects.create(
             title="Title Service",
             description="descrip",
