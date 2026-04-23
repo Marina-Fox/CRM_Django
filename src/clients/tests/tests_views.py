@@ -14,6 +14,7 @@ class TestLeadList(TestCase):
     """
     Тесты для представленния LeadList.
     """
+
     def setUp(self) -> None:
         self.service = Services.objects.create(
             title="Title",
@@ -82,6 +83,7 @@ class TestLeadDetail(TestCase):
     """
     Тесты для представленния LeadList.
     """
+
     def setUp(self) -> None:
         self.service = Services.objects.create(
             title="Title",
@@ -129,6 +131,78 @@ class TestLeadDetail(TestCase):
 
     def test_get_lead_list_permis(self):
         "Проверка, что пользователь без разрешения view_lead не может просмотреть детали потенциального клиента."
+        self.client.force_login(self.user)
+        respons = self.client.get(self.url)
+
+        self.assertEqual(respons.status_code, 403)
+
+
+class TestLeadCreate(TestCase):
+    """
+    Тесты для представленния LeadCreate.
+    """
+    def setUp(self) -> None:
+        self.service = Services.objects.create(
+            title="Title",
+            description="descrip",
+            cost=Decimal("500.00"),
+        )
+        self.ad_campaign = Advertisement.objects.create(
+            title="Test ad camp",
+            service=self.service,
+            promotion_channel="Test 1",
+            budget=Decimal("500.00"),
+        )
+        self.user = User.objects.create_user(username="test_user", password="pass")
+        con_type = ContentType.objects.get_for_model(Lead)
+        self.permis_view = Permission.objects.get(
+            codename="view_lead",
+            content_type=con_type,
+        )
+        self.permis_add = Permission.objects.get(
+            codename="add_lead",
+            content_type=con_type,
+        )
+        self.url = reverse("clients:clients_create")
+
+    def test_get_lead_create(self):
+        "Проверка получения формы для добавления потенциального клиента."
+        self.user.user_permissions.add(self.permis_add)
+        self.client.force_login(self.user)
+        respons = self.client.get(self.url)
+
+        self.assertEqual(respons.status_code, 200)
+        self.assertTemplateUsed(respons, "clients/leads_create.html")
+
+    def test_post_lead_create(self):
+        "Проверка добавления нового потенциального клиента."
+        self.user.user_permissions.add(self.permis_add, self.permis_view)
+        self.client.force_login(self.user)
+        data={
+            "first_name": "Test Name",
+            "last_name": "Test Last Name",
+            "patronymic": "Test Patron",
+            "phone": "+79456542656",
+            "email": "test@mail.com",
+            "advertisement": self.ad_campaign.pk,
+        }
+        respons = self.client.post(self.url, data=data, format="json")
+
+        self.assertEqual(respons.status_code, 302)
+
+        lead = Lead.objects.first()
+        self.assertRedirects(
+            respons, reverse("clients:clients_detail", args=[lead.pk])
+        )
+
+    def test_get_lead_create_unauthorized(self):
+        "Проверка перенаправления пользователя на страницу входа."
+        respons = self.client.get(self.url)
+        self.assertEqual(respons.status_code, 302)
+        self.assertRedirects(respons, f"/admin/login/?next={self.url}")
+
+    def test_get_lead_creat_permis(self):
+        "Проверка, что пользователь без разрешения add_lead не может добавить нового потенциального клиента."
         self.client.force_login(self.user)
         respons = self.client.get(self.url)
 

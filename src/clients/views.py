@@ -48,4 +48,4 @@ class LeadCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     template_name = "clients/leads_create.html"
 
     def get_success_url(self) -> str:
-        return reverse_lazy("clients:clients_create")
+        return reverse_lazy("clients:clients_detail", args=[self.object.pk])
