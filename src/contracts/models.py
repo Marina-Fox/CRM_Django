@@ -19,7 +19,7 @@ class Contracts(models.Model):
         related_name="contracts",
     )
     file_doc = models.FileField(upload_to="contracts/%Y/%m/%d/", verbose_name="Файл контракта")
-    start_date = models.DateField(verbose_name="Дата заключения", default=timezone.now())
+    start_date = models.DateField(verbose_name="Дата заключения", default=timezone.now().date())
     end_date = models.DateField(verbose_name="Окончание действия")
     cost = models.DecimalField(
         verbose_name="Стоимость",
