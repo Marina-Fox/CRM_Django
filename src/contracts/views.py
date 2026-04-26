@@ -33,15 +33,15 @@ class ContractsDetail(PermissionRequiredMixin, LoginRequiredMixin, DetailView):
     template_name = "contracts/contracts_detail.html"
 
 
-# class ContractsCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
-#     """
-#     Добавление нового контракта.
-#     """
-#     permission_required = ["contracts.add_contracts"]
-#     login_url = "/admin/login/"
-#     model = Contracts
-#     form_class = ContractsForm
-#     template_name = "contracts/contracts_create.html"
+class ContractsCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
+    """
+    Добавление нового контракта.
+    """
+    permission_required = ["contracts.add_contracts"]
+    login_url = "/admin/login/"
+    model = Contracts
+    form_class = ContractsForm
+    template_name = "contracts/contracts_create.html"
 
-#     def get_success_url(self) -> str:
-#         return reverse_lazy("contracts:contracts_detail", args=[self.object.pk])
+    def get_success_url(self) -> str:
+        return reverse_lazy("contracts:contracts_detail", args=[self.object.pk])
