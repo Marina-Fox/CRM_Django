@@ -21,6 +21,7 @@ load_dotenv(dotenv_path=".env.db", override=True)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 IS_CI = bool(os.environ.get("CI")) or bool(os.environ.get("GITHUB_ACTIONS"))
 
 
@@ -152,7 +153,7 @@ STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "dist/static")
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "dist/media")
+MEDIA_ROOT = "/app/media"
 
 LOGLEVEL = os.getenv("LOGLEVEL", "info").upper()
 
