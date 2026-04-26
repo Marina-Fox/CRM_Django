@@ -45,3 +45,17 @@ class ContractsCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
 
     def get_success_url(self) -> str:
         return reverse_lazy("contracts:contracts_detail", args=[self.object.pk])
+
+
+class ContractsUptade(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
+    """
+    Редактирование контракта.
+    """
+    permission_required = ["contracts.change_contracts"]
+    login_url = "/admin/login/"
+    model = Contracts
+    form_class = ContractsForm
+    template_name = "contracts/contracts_edit.html"
+
+    def get_success_url(self) -> str:
+        reverse_lazy("contracts:contracts_detail", args=[self.object.pk])
