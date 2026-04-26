@@ -131,7 +131,7 @@ class TestAdvertisementCreate(TestCase):
         self.assertEqual(respons.status_code, 302)
         self.assertRedirects(respons, f"/admin/login/?next={self.url}")
 
-    def test_get_advertisement_creat_permis(self):
+    def test_get_advertisement_create_permis(self):
         "Проверка, что пользователь без разрешения add_advertisement не может создать новую рекламную кампанию."
         self.client.force_login(self.user)
         respons = self.client.get(self.url)
