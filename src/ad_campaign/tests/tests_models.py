@@ -68,8 +68,8 @@ class TestAdvertisementModel(TestCase):
         with self.assertRaises(ValidationError):
             advertisement.full_clean()
 
-    def test_model_advertisement_servise(self):
-        "Реклама должна быть связана с услугой"
+    def test_model_advertisement_servise_req(self):
+        "Реклама должна быть связана с услугой."
         advertisement = Advertisement(
             title="Title",
             promotion_channel="Интернет",
