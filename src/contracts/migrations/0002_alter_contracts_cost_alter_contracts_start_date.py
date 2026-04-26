@@ -7,20 +7,29 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('contracts', '0001_initial'),
+        ("contracts", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='contracts',
-            name='cost',
-            field=models.DecimalField(decimal_places=2, max_digits=12, validators=[django.core.validators.MinValueValidator(Decimal('0.01'))], verbose_name='Стоимость'),
+            model_name="contracts",
+            name="cost",
+            field=models.DecimalField(
+                decimal_places=2,
+                max_digits=12,
+                validators=[django.core.validators.MinValueValidator(Decimal("0.01"))],
+                verbose_name="Стоимость",
+            ),
         ),
         migrations.AlterField(
-            model_name='contracts',
-            name='start_date',
-            field=models.DateField(default=datetime.datetime(2026, 4, 26, 14, 25, 13, 2970, tzinfo=datetime.timezone.utc), verbose_name='Дата заключения'),
+            model_name="contracts",
+            name="start_date",
+            field=models.DateField(
+                default=datetime.datetime(
+                    2026, 4, 26, 14, 25, 13, 2970, tzinfo=datetime.timezone.utc
+                ),
+                verbose_name="Дата заключения",
+            ),
         ),
     ]

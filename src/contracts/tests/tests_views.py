@@ -94,6 +94,7 @@ class TestContractsList(TestCase):
 
         self.assertEqual(respons.status_code, 403)
 
+
 @override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
 class TestContractsDetail(TestCase):
     """
@@ -149,6 +150,7 @@ class TestContractsDetail(TestCase):
         respons = self.client.get(self.url)
 
         self.assertEqual(respons.status_code, 403)
+
 
 @override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
 class TestContractsCreate(TestCase):
@@ -228,6 +230,7 @@ class TestContractsUpdate(TestCase):
     """
     Тестирование представления ContractsUptade.
     """
+
     def setUp(self) -> None:
         self.service = Services.objects.create(
             title="Title",
@@ -282,7 +285,6 @@ class TestContractsUpdate(TestCase):
 
         self.assertEqual(respons.status_code, 302)
 
-        contract = Contracts.objects.first()
         self.assertRedirects(
             respons, reverse("contracts:contracts_detail", args=[self.contract.pk])
         )

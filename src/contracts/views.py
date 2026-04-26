@@ -11,11 +11,13 @@ from django.views.generic import (
 from .models import Contracts
 from .form import ContractsForm
 
+
 # Create your views here.
 class ContractsList(PermissionRequiredMixin, LoginRequiredMixin, ListView):
     """
     Отображение списка контрактов.
     """
+
     permission_required = ["contracts.view_contracts"]
     login_url = "/admin/login/"
     queryset = Contracts.objects.all()
@@ -27,6 +29,7 @@ class ContractsDetail(PermissionRequiredMixin, LoginRequiredMixin, DetailView):
     """
     Информация о контракте.
     """
+
     permission_required = ["contracts.view_contracts"]
     login_url = "/admin/login/"
     model = Contracts
@@ -37,6 +40,7 @@ class ContractsCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     """
     Добавление нового контракта.
     """
+
     permission_required = ["contracts.add_contracts"]
     login_url = "/admin/login/"
     model = Contracts
@@ -51,6 +55,7 @@ class ContractsUptade(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     """
     Редактирование контракта.
     """
+
     permission_required = ["contracts.change_contracts"]
     login_url = "/admin/login/"
     model = Contracts
@@ -65,6 +70,7 @@ class ContractsDelete(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
     """
     Удаление контракта.
     """
+
     permission_required = ["contracts.delete_contracts"]
     login_url = "/admin/login/"
     model = Contracts

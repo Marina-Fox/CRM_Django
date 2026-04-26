@@ -1,6 +1,4 @@
 from decimal import Decimal
-from typing import Iterable
-from xml.dom import ValidationErr
 
 from django.db import models
 from django.core.validators import MinValueValidator
@@ -8,6 +6,7 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 
 from ..services.models import Services
+
 
 # Create your models here.
 class Contracts(models.Model):
@@ -18,8 +17,12 @@ class Contracts(models.Model):
         on_delete=models.PROTECT,
         related_name="contracts",
     )
-    file_doc = models.FileField(upload_to="contracts/%Y/%m/%d/", verbose_name="Файл контракта")
-    start_date = models.DateField(verbose_name="Дата заключения", default=timezone.now().date())
+    file_doc = models.FileField(
+        upload_to="contracts/%Y/%m/%d/", verbose_name="Файл контракта"
+    )
+    start_date = models.DateField(
+        verbose_name="Дата заключения", default=timezone.now().date()
+    )
     end_date = models.DateField(verbose_name="Окончание действия")
     cost = models.DecimalField(
         verbose_name="Стоимость",
@@ -35,13 +38,15 @@ class Contracts(models.Model):
         "Валидация: end_date > start_date."
         super().clean()
         if not self.end_date:
-            raise ValidationError({
-                "end_date": "Дата окончания действия контракта должна быть указана."
-            })
+            raise ValidationError(
+                {"end_date": "Дата окончания действия контракта должна быть указана."}
+            )
         elif self.end_date <= self.start_date:
-            raise ValidationError({
-                "end_date": "Дата окончания не может быть раньше даты заключения контракта."
-            })
+            raise ValidationError(
+                {
+                    "end_date": "Дата окончания не может быть раньше даты заключения контракта."
+                }
+            )
 
     def save(self, *args, **kwargs) -> None:
         self.full_clean()

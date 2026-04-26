@@ -20,6 +20,7 @@ class TestContractsModel(TestCase):
     """
     Тесты для модели Contracts.
     """
+
     def setUp(self) -> None:
         self.service = Services.objects.create(
             title="Title Service",
