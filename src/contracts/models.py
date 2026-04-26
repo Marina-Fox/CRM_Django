@@ -1,7 +1,10 @@
 from decimal import Decimal
+from typing import Iterable
+from xml.dom import ValidationErr
 
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.core.exceptions import ValidationError
 from django.utils import timezone
 
 from ..services.models import Services
@@ -20,10 +23,26 @@ class Contracts(models.Model):
     end_date = models.DateField(verbose_name="Окончание действия")
     cost = models.DecimalField(
         verbose_name="Стоимость",
-        max_digits=10,
+        max_digits=12,
         decimal_places=2,
         validators=[MinValueValidator(Decimal("0.01"))],
     )
 
     def __str__(self):
         return f"{self.title} {self.service.title}"
+
+    def clean(self) -> None:
+        "Валидация: end_date > start_date."
+        super().clean()
+        if not self.end_date:
+            raise ValidationError({
+                "end_date": "Дата окончания действия контракта должна быть указана."
+            })
+        elif self.end_date <= self.start_date:
+            raise ValidationError({
+                "end_date": "Дата окончания не может быть раньше даты заключения контракта."
+            })
+
+    def save(self, *args, **kwargs) -> None:
+        self.full_clean()
+        super().save(*args, **kwargs)
