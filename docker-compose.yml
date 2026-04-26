@@ -23,9 +23,8 @@ services:
       - .env.app
     ports:
       - "8000:8000"
-    # volumes:
-    #   - ./dist:/project/dist
-    #   - ./dist:/usr/share/nginx/html
+    volumes:
+      - ./dist/media:/app/media
     networks:
       - net_app
     depends_on:
