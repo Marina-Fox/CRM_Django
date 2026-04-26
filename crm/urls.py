@@ -26,6 +26,6 @@ urlpatterns = [
     path("services/", include("src.services.urls")),
     path("ads/", include("src.ad_campaign.urls")),
     path("leads/", include("src.clients.urls")),
-    path("contracts/", include("src.contracts")),
+    path("contracts/", include("src.contracts.urls")),
     path("metrics/", include("django_prometheus.urls")),
 ]
