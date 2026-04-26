@@ -21,3 +21,27 @@ class ContractsList(PermissionRequiredMixin, LoginRequiredMixin, ListView):
     queryset = Contracts.objects.all()
     template_name = "contracts/contracts_list.html"
     context_object_name = "contracts"
+
+
+class ContractsDetail(PermissionRequiredMixin, LoginRequiredMixin, DetailView):
+    """
+    Информация о контракте.
+    """
+    permission_required = ["contracts.view_contracts"]
+    login_url = "/admin/login/"
+    model = Contracts
+    template_name = "contracts/contracts_list.html"
+
+
+# class ContractsCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
+#     """
+#     Добавление нового контракта.
+#     """
+#     permission_required = ["contracts.add_contracts"]
+#     login_url = "/admin/login/"
+#     model = Contracts
+#     form_class = ContractsForm
+#     template_name = "contracts/contracts_create.html"
+
+#     def get_success_url(self) -> str:
+#         return reverse_lazy("contracts:contracts_detail", args=[self.object.pk])
