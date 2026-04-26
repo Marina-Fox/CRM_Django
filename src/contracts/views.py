@@ -30,7 +30,7 @@ class ContractsDetail(PermissionRequiredMixin, LoginRequiredMixin, DetailView):
     permission_required = ["contracts.view_contracts"]
     login_url = "/admin/login/"
     model = Contracts
-    template_name = "contracts/contracts_list.html"
+    template_name = "contracts/contracts_detail.html"
 
 
 # class ContractsCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
