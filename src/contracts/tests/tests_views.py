@@ -303,6 +303,7 @@ class TestContractsUpdate(TestCase):
         self.assertEqual(respons.status_code, 403)
 
 
+@override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
 class TestContractsDelete(TestCase):
     """
     Тестирование представления ContractsDelete.
