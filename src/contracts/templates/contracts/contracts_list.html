@@ -10,7 +10,7 @@
         <ul class="list-group">
             {% for contract in contracts %}
             <li class="list-group-item list-group-item-light d-flex justify-content-between">
-                <a href="/contracts/{{ contract.pk }}" class="text-decoration-none link-dark">{{ contract.name }}</a>
+                <a href="/contracts/{{ contract.pk }}" class="text-decoration-none link-dark">{{ contract.title }}</a>
                 <a href="/contracts/{{ contract.pk }}/delete" class="btn btn-danger">Удалить</a>
             </li>
             {% endfor %}
