@@ -58,4 +58,4 @@ class ContractsUptade(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     template_name = "contracts/contracts_edit.html"
 
     def get_success_url(self) -> str:
-        reverse_lazy("contracts:contracts_detail", args=[self.object.pk])
+        return reverse_lazy("contracts:contracts_detail", args=[self.object.pk])

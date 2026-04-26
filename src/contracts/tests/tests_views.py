@@ -221,3 +221,81 @@ class TestContractsCreate(TestCase):
         respons = self.client.get(self.url)
 
         self.assertEqual(respons.status_code, 403)
+
+
+@override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
+class TestContractsUpdate(TestCase):
+    """
+    Тестирование представления ContractsUptade.
+    """
+    def setUp(self) -> None:
+        self.service = Services.objects.create(
+            title="Title",
+            description="descrip",
+            cost=Decimal("500.00"),
+        )
+        self.file_contr = SimpleUploadedFile(
+            name="test 1.pdf",
+            content=b"test_contract",
+            content_type="application/pdf",
+        )
+        self.end_date = date.today() + timedelta(days=30)
+        self.contract = Contracts.objects.create(
+            title="Test Contr 1",
+            service=self.service,
+            file_doc=self.file_contr,
+            end_date=self.end_date,
+            cost=Decimal("500000.00"),
+        )
+        self.user = User.objects.create_user(username="test_user", password="pass")
+        con_type = ContentType.objects.get_for_model(Contracts)
+        self.permis_view = Permission.objects.get(
+            codename="view_contracts",
+            content_type=con_type,
+        )
+        self.permis_update = Permission.objects.get(
+            codename="change_contracts",
+            content_type=con_type,
+        )
+        self.url = reverse("contracts:contracts_update", args=[self.contract.pk])
+
+    def test_get_contracts_update(self):
+        "Проверка получения формы для обновления данных контракта."
+        self.user.user_permissions.add(self.permis_update)
+        self.client.force_login(self.user)
+        respons = self.client.get(self.url)
+
+        self.assertEqual(respons.status_code, 200)
+        self.assertTemplateUsed(respons, "contracts/contracts_edit.html")
+
+    def test_post_contracts_update(self):
+        "Проверка внесения изменений в данные контракта."
+        self.user.user_permissions.add(self.permis_update, self.permis_view)
+        self.client.force_login(self.user)
+        data = {
+            "title": "Test Contr 2",
+            "service": self.service.pk,
+            "end_date": self.end_date,
+            "cost": Decimal("5000000.00"),
+        }
+        respons = self.client.post(self.url, data=data)
+
+        self.assertEqual(respons.status_code, 302)
+
+        contract = Contracts.objects.first()
+        self.assertRedirects(
+            respons, reverse("contracts:contracts_detail", args=[self.contract.pk])
+        )
+
+    def test_get_contracts_update_unauthorized(self):
+        "Проверка перенаправления пользователя на страницу входа."
+        respons = self.client.get(self.url)
+        self.assertEqual(respons.status_code, 302)
+        self.assertRedirects(respons, f"/admin/login/?next={self.url}")
+
+    def test_get_contracts_update_permis(self):
+        "Проверка, что пользователь без разрешения change_contracts не может изменить данные контракта."
+        self.client.force_login(self.user)
+        respons = self.client.get(self.url)
+
+        self.assertEqual(respons.status_code, 403)
