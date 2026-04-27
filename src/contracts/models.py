@@ -1,9 +1,9 @@
+from datetime import date
 from decimal import Decimal
 
 from django.db import models
 from django.core.validators import MinValueValidator
 from django.core.exceptions import ValidationError
-from django.utils import timezone
 
 from ..services.models import Services
 
@@ -21,7 +21,7 @@ class Contracts(models.Model):
         upload_to="contracts/%Y/%m/%d/", verbose_name="Файл контракта"
     )
     start_date = models.DateField(
-        verbose_name="Дата заключения", default=timezone.now().date()
+        verbose_name="Дата заключения", default=date.today
     )
     end_date = models.DateField(verbose_name="Окончание действия")
     cost = models.DecimalField(

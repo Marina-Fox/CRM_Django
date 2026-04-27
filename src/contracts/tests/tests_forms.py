@@ -102,6 +102,22 @@ class TestContractsForm(TestCase):
 
         self.assertFalse(form.is_valid())
 
+    def test_contracts_invalid_end_date_future(self):
+        "Дата окончания действия контракта должна быть не раньше даты заключения контракта."
+        end_date = date.today() - timedelta(days=30)
+        data = {
+            "title": "Test Contr 1",
+            "service": self.service.pk,
+            "end_date": end_date,
+            "cost": Decimal("500000.00"),
+        }
+        files = {
+            "file_doc": self.file_contr,
+        }
+        form = ContractsForm(data=data, files=files)
+
+        self.assertFalse(form.is_valid())
+
     def test_contracts_invalid_cost_none(self):
         "Отправка формы без указания стоимости."
         data = {
