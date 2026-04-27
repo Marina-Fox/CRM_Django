@@ -4,17 +4,20 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('clients', '0001_initial'),
-        ('contracts', '0004_alter_contracts_start_date'),
-        ('customers', '0001_initial'),
+        ("clients", "0001_initial"),
+        ("contracts", "0004_alter_contracts_start_date"),
+        ("customers", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='lead',
-            name='contracts',
-            field=models.ManyToManyField(through='customers.Customers', to='contracts.contracts', verbose_name='Контракты'),
+            model_name="lead",
+            name="contracts",
+            field=models.ManyToManyField(
+                through="customers.Customers",
+                to="contracts.contracts",
+                verbose_name="Контракты",
+            ),
         ),
     ]

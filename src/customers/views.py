@@ -17,6 +17,7 @@ class CustomersList(PermissionRequiredMixin, LoginRequiredMixin, ListView):
     """
     Отображение списка активных клиентов.
     """
+
     permission_required = ["customers.view_customers"]
     login_url = "/admin/login/"
     queryset = Customers.objects.all()

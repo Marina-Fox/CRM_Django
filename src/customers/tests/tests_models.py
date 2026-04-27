@@ -1,5 +1,4 @@
 import tempfile
-import os
 
 from datetime import date, timedelta
 from decimal import Decimal
@@ -86,6 +85,7 @@ class TestCustomersModel(TestCase):
 
         with self.assertRaises(ValidationError):
             customer.full_clean()
+
 
 # тесты:
 # - с 1 клиентом можно заключить несколько контрактов

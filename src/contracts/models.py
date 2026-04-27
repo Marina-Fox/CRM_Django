@@ -20,9 +20,7 @@ class Contracts(models.Model):
     file_doc = models.FileField(
         upload_to="contracts/%Y/%m/%d/", verbose_name="Файл контракта"
     )
-    start_date = models.DateField(
-        verbose_name="Дата заключения", default=date.today
-    )
+    start_date = models.DateField(verbose_name="Дата заключения", default=date.today)
     end_date = models.DateField(verbose_name="Окончание действия")
     cost = models.DecimalField(
         verbose_name="Стоимость",

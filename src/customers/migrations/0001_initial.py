@@ -5,24 +5,45 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('clients', '0001_initial'),
-        ('contracts', '0004_alter_contracts_start_date'),
+        ("clients", "0001_initial"),
+        ("contracts", "0004_alter_contracts_start_date"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Customers',
+            name="Customers",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('contract', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='contracts.contracts', verbose_name='Контракт')),
-                ('lead', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='clients.lead', verbose_name='Клиент')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "contract",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="contracts.contracts",
+                        verbose_name="Контракт",
+                    ),
+                ),
+                (
+                    "lead",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="clients.lead",
+                        verbose_name="Клиент",
+                    ),
+                ),
             ],
             options={
-                'unique_together': {('lead', 'contract')},
+                "unique_together": {("lead", "contract")},
             },
         ),
     ]

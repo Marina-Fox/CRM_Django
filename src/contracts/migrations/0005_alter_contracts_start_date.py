@@ -5,15 +5,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('contracts', '0004_alter_contracts_start_date'),
+        ("contracts", "0004_alter_contracts_start_date"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='contracts',
-            name='start_date',
-            field=models.DateField(default=datetime.date.today, verbose_name='Дата заключения'),
+            model_name="contracts",
+            name="start_date",
+            field=models.DateField(
+                default=datetime.date.today, verbose_name="Дата заключения"
+            ),
         ),
     ]
