@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "src.services.apps.ServicesConfig",
     "src.ad_campaign.apps.AdCampaignConfig",
     "src.contracts.apps.ContractsConfig",
+    "src.customers.apps.CustomersConfig",
 ]
 
 MIDDLEWARE = [
