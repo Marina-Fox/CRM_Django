@@ -4,6 +4,6 @@ from .models import Customers
 
 
 class CustomersForm(forms.ModelForm):
-    class Mete:
+    class Meta:
         model = Customers
         fields = ["lead", "contract"]
