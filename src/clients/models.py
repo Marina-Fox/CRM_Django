@@ -21,6 +21,9 @@ class Lead(models.Model):
         default=None,
         null=True,
     )
+    contracts = models.ManyToManyField(
+        "contracts.Contracts", verbose_name="Контракты", through="customers.Customers"
+    )
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
