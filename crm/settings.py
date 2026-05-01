@@ -171,6 +171,9 @@ LOGGING = {
             "class": "logging.StreamHandler",
             "formatter": "verbose",
         },
+        "null": {
+            "class": "logging.NullHandler",
+        },
         # "file": {
         #     "class": "logging.handlers.RotatingFileHandler",
         #     "filename": BASE_DIR / "logs/app.log",
@@ -198,6 +201,11 @@ LOGGING = {
         "ci": {
             "handlers": ["console"],
             "level": LOGLEVEL,
+            "propagate": False,
+        },
+        "django.request": {
+            "handlers": ["null"],
+            "level": "ERROR",
             "propagate": False,
         },
         # 'log_loki': {
