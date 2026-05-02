@@ -6,7 +6,6 @@ from django.contrib.auth.models import User, Permission
 from django.contrib.contenttypes.models import ContentType
 
 from ..models import Advertisement
-from ...services.models import Services
 
 
 class BaseAdvertisementTestCase(TestCase):
@@ -105,10 +104,9 @@ class TestAdvertisementCreate(BaseAdvertisementTestCase):
         "Проверка создания новой рекламной кампании."
         self.user.user_permissions.add(self.permis_add, self.permis_view)
         self.client.force_login(self.user)
-        service = Services.objects.get(title="Services Test 3")
         data = {
             "title": "Test add advertisement",
-            "service": service.pk,
+            "service": 3,
             "promotion_channel": "Test create advertisement",
             "budget": Decimal("500.00"),
         }
