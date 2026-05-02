@@ -10,127 +10,105 @@ from django.contrib.auth.models import User, Permission
 from django.contrib.contenttypes.models import ContentType
 
 from ..models import Contracts
-from ...services.models import Services
 
 
 TEMP_MEDIA_ROOT = tempfile.mkdtemp()
 
 
-@override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
-class TestContractsList(TestCase):
+class BaseContractsTestCase(TestCase):
     """
-    Тесты для представленния ContractsList.
+    Базовый класс для тестов приложения contracts.
     """
 
-    def setUp(self) -> None:
-        self.service_1 = Services.objects.create(
-            title="Title",
-            description="descrip",
-            cost=Decimal("500.00"),
-        )
-        self.file_contr_1 = SimpleUploadedFile(
-            name="test 1.pdf",
-            content=b"test_contract",
-            content_type="application/pdf",
-        )
-        self.end_date_1 = date.today() + timedelta(days=30)
-        self.contract_1 = Contracts.objects.create(
-            title="Test Contr 1",
-            service=self.service_1,
-            file_doc=self.file_contr_1,
-            end_date=self.end_date_1,
-            cost=Decimal("500000.00"),
-        )
-        self.service_2 = Services.objects.create(
-            title="Title 2",
-            description="descrip 2",
-            cost=Decimal("1500.00"),
-        )
-        self.file_contr_2 = SimpleUploadedFile(
-            name="test 2.pdf",
-            content=b"test_contract 2",
-            content_type="application/pdf",
-        )
-        self.end_date_2 = date.today() + timedelta(days=10)
-        self.contract_2 = Contracts.objects.create(
-            title="Test Contr 1",
-            service=self.service_2,
-            file_doc=self.file_contr_2,
-            end_date=self.end_date_2,
-            cost=Decimal("5000000.00"),
-        )
-        self.user = User.objects.create_user(username="test_user", password="pass")
-        con_type = ContentType.objects.get_for_model(Contracts)
-        self.permis = Permission.objects.get(
+    @classmethod
+    def setUpTestData(cls) -> None:
+        cls.user = User.objects.create_user(username="test_user", password="pass")
+        content_type = ContentType.objects.get_for_model(Contracts)
+        cls.permis_view = Permission.objects.get(
             codename="view_contracts",
-            content_type=con_type,
+            content_type=content_type,
         )
-        self.url = reverse("contracts:contracts_list")
-
-    def test_get_contracts_list(self):
-        "Проверка получения списка контрактов."
-        self.user.user_permissions.add(self.permis)
-        self.client.force_login(self.user)
-        respons = self.client.get(self.url)
-
-        self.assertEqual(respons.status_code, 200)
-        self.assertQuerySetEqual(
-            respons.context["contracts"],
-            [self.contract_1, self.contract_2],
-            ordered=False,
+        cls.permis_add = Permission.objects.get(
+            codename="add_contracts",
+            content_type=content_type,
+        )
+        cls.permis_update = Permission.objects.get(
+            codename="change_contracts",
+            content_type=content_type,
+        )
+        cls.permis_del = Permission.objects.get(
+            codename="delete_contracts",
+            content_type=content_type,
         )
 
-    def test_get_contracts_list_unauthorized(self):
+    def _test_get_unauthorized(self, url):
         "Проверка перенаправления пользователя на страницу входа."
-        respons = self.client.get(self.url)
+        respons = self.client.get(url)
 
         self.assertEqual(respons.status_code, 302)
-        self.assertRedirects(respons, f"/admin/login/?next={self.url}")
+        self.assertRedirects(respons, f"/admin/login/?next={url}")
 
-    def test_get_contracts_list_permis(self):
-        "Проверка, что пользователь без разрешения view_contracts не может просмотреть список контрактов."
+    def _test_get_not_permis(self, url):
+        "Проверка, что пользователь без нужного разрешения не может просмотреть соответствующую страницу."
         self.client.force_login(self.user)
-        respons = self.client.get(self.url)
+        respons = self.client.get(url)
 
         self.assertEqual(respons.status_code, 403)
 
 
+class TestContractsList(BaseContractsTestCase):
+    """
+    Тесты для представленния ContractsList.
+    """
+
+    fixtures = ["contracts.json"]
+
+    @classmethod
+    def setUpTestData(cls) -> None:
+        super().setUpTestData()
+        cls.url = reverse("contracts:contracts_list")
+
+    def test_get_contracts_list(self):
+        "Проверка получения списка контрактов."
+        self.user.user_permissions.add(self.permis_view)
+        self.client.force_login(self.user)
+        respons = self.client.get(self.url)
+
+        self.assertEqual(respons.status_code, 200)
+        self.assertEqual(Contracts.objects.count(), 2)
+
+    def test_get_contracts_list_unauthorized(self):
+        "Проверка перенаправления пользователя на страницу входа."
+        self._test_get_unauthorized(self.url)
+
+    def test_get_contracts_list_permis(self):
+        "Проверка, что пользователь без разрешения view_contracts не может просмотреть список контрактов."
+        self._test_get_not_permis(self.url)
+
+
 @override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
-class TestContractsDetail(TestCase):
+class TestContractsDetail(BaseContractsTestCase):
     """
     Тесты для представленния ContractsDetail.
     """
 
-    def setUp(self) -> None:
-        self.service = Services.objects.create(
-            title="Title",
-            description="descrip",
-            cost=Decimal("500.00"),
-        )
-        self.file_contr = SimpleUploadedFile(
+    fixtures = ["contracts.json"]
+
+    @classmethod
+    def setUpTestData(cls) -> None:
+        super().setUpTestData()
+        cls.contract = Contracts.objects.get(pk=1)
+        file_contr = SimpleUploadedFile(
             name="test 1.pdf",
             content=b"test_contract",
             content_type="application/pdf",
         )
-        self.end_date = date.today() + timedelta(days=30)
-        self.contract = Contracts.objects.create(
-            title="Test Contr 1",
-            service=self.service,
-            file_doc=self.file_contr,
-            end_date=self.end_date,
-            cost=Decimal("500000.00"),
-        )
-        self.user = User.objects.create_user(username="test_user", password="pass")
-        con_type = ContentType.objects.get_for_model(Contracts)
-        self.permis = Permission.objects.get(
-            codename="view_contracts",
-            content_type=con_type,
-        )
-        self.url = reverse("contracts:contracts_detail", args=[self.contract.pk])
+        cls.contract.file_doc.save("test 1.pdf", file_contr)
+        cls.url = reverse("contracts:contracts_detail", args=[1])
 
     def test_get_contracts_detail(self):
         "Проверка получения страницы деталей контракта."
-        self.user.user_permissions.add(self.permis)
+        self.user.user_permissions.add(self.permis_view)
         self.client.force_login(self.user)
         respons = self.client.get(self.url)
 
@@ -140,47 +118,31 @@ class TestContractsDetail(TestCase):
 
     def test_get_contracts_detail_unauthorized(self):
         "Проверка перенаправления пользователя на страницу входа."
-        respons = self.client.get(self.url)
-        self.assertEqual(respons.status_code, 302)
-        self.assertRedirects(respons, f"/admin/login/?next={self.url}")
+        self._test_get_unauthorized(self.url)
 
     def test_get_contracts_detail_permis(self):
         "Проверка, что пользователь без разрешения view_contracts не может просмотреть детальную страницу контракта."
-        self.client.force_login(self.user)
-        respons = self.client.get(self.url)
-
-        self.assertEqual(respons.status_code, 403)
+        self._test_get_not_permis(self.url)
 
 
 @override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
-class TestContractsCreate(TestCase):
+class TestContractsCreate(BaseContractsTestCase):
     """
     Тесты для представленния ContractsCreate.
     """
 
-    def setUp(self) -> None:
-        self.service = Services.objects.create(
-            title="Title",
-            description="descrip",
-            cost=Decimal("500.00"),
-        )
-        self.file_contr = SimpleUploadedFile(
+    fixtures = ["contracts.json"]
+
+    @classmethod
+    def setUpTestData(cls) -> None:
+        super().setUpTestData()
+        cls.file_contr = SimpleUploadedFile(
             name="test 1.pdf",
             content=b"test_contract",
             content_type="application/pdf",
         )
-        self.end_date = date.today() + timedelta(days=30)
-        self.user = User.objects.create_user(username="test_user", password="pass")
-        con_type = ContentType.objects.get_for_model(Contracts)
-        self.permis_view = Permission.objects.get(
-            codename="view_contracts",
-            content_type=con_type,
-        )
-        self.permis_add = Permission.objects.get(
-            codename="add_contracts",
-            content_type=con_type,
-        )
-        self.url = reverse("contracts:contracts_create")
+        cls.end_date = date.today() + timedelta(days=30)
+        cls.url = reverse("contracts:contracts_create")
 
     def test_get_contracts_create(self):
         "Проверка получения формы для добавления нового контракта."
@@ -196,71 +158,48 @@ class TestContractsCreate(TestCase):
         self.user.user_permissions.add(self.permis_add, self.permis_view)
         self.client.force_login(self.user)
         data = {
-            "title": "Test Contr 1",
-            "service": self.service.pk,
+            "title": "Test Contr Create",
+            "service": 3,
             "file_doc": self.file_contr,
             "end_date": self.end_date,
             "cost": Decimal("500000.00"),
         }
         respons = self.client.post(self.url, data=data)
+        contract = Contracts.objects.get(title="Test Contr Create")
 
         self.assertEqual(respons.status_code, 302)
-
-        contract = Contracts.objects.first()
         self.assertRedirects(
             respons, reverse("contracts:contracts_detail", args=[contract.pk])
         )
 
     def test_get_contracts_create_unauthorized(self):
         "Проверка перенаправления пользователя на страницу входа."
-        respons = self.client.get(self.url)
-        self.assertEqual(respons.status_code, 302)
-        self.assertRedirects(respons, f"/admin/login/?next={self.url}")
+        self._test_get_unauthorized(self.url)
 
     def test_get_contracts_create_permis(self):
         "Проверка, что пользователь без разрешения add_contracts не может добавить новый контракт."
-        self.client.force_login(self.user)
-        respons = self.client.get(self.url)
-
-        self.assertEqual(respons.status_code, 403)
+        self._test_get_not_permis(self.url)
 
 
 @override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
-class TestContractsUpdate(TestCase):
+class TestContractsUpdate(BaseContractsTestCase):
     """
     Тестирование представления ContractsUptade.
     """
 
-    def setUp(self) -> None:
-        self.service = Services.objects.create(
-            title="Title",
-            description="descrip",
-            cost=Decimal("500.00"),
-        )
-        self.file_contr = SimpleUploadedFile(
+    fixtures = ["contracts.json"]
+
+    @classmethod
+    def setUpTestData(cls) -> None:
+        super().setUpTestData()
+        cls.contract = Contracts.objects.get(pk=1)
+        file_contr = SimpleUploadedFile(
             name="test 1.pdf",
             content=b"test_contract",
             content_type="application/pdf",
         )
-        self.end_date = date.today() + timedelta(days=30)
-        self.contract = Contracts.objects.create(
-            title="Test Contr 1",
-            service=self.service,
-            file_doc=self.file_contr,
-            end_date=self.end_date,
-            cost=Decimal("500000.00"),
-        )
-        self.user = User.objects.create_user(username="test_user", password="pass")
-        con_type = ContentType.objects.get_for_model(Contracts)
-        self.permis_view = Permission.objects.get(
-            codename="view_contracts",
-            content_type=con_type,
-        )
-        self.permis_update = Permission.objects.get(
-            codename="change_contracts",
-            content_type=con_type,
-        )
-        self.url = reverse("contracts:contracts_update", args=[self.contract.pk])
+        cls.contract.file_doc.save("test 1.pdf", file_contr)
+        cls.url = reverse("contracts:contracts_update", args=[1])
 
     def test_get_contracts_update(self):
         "Проверка получения формы для обновления данных контракта."
@@ -276,69 +215,47 @@ class TestContractsUpdate(TestCase):
         self.user.user_permissions.add(self.permis_update, self.permis_view)
         self.client.force_login(self.user)
         data = {
-            "title": "Test Contr 2",
-            "service": self.service.pk,
-            "end_date": self.end_date,
-            "cost": Decimal("5000000.00"),
+            "title": "Test Contr Update",
+            "service": 1,
+            "end_date": "2026-09-30",
+            "cost": "5000.00",
         }
         respons = self.client.post(self.url, data=data)
+        contract = Contracts.objects.get(pk=1)
 
         self.assertEqual(respons.status_code, 302)
-
-        self.assertRedirects(
-            respons, reverse("contracts:contracts_detail", args=[self.contract.pk])
-        )
+        self.assertRedirects(respons, reverse("contracts:contracts_detail", args=[1]))
+        self.assertEqual(contract.title, "Test Contr Update")
+        self.assertEqual(contract.cost, Decimal("5000.00"))
 
     def test_get_contracts_update_unauthorized(self):
         "Проверка перенаправления пользователя на страницу входа."
-        respons = self.client.get(self.url)
-        self.assertEqual(respons.status_code, 302)
-        self.assertRedirects(respons, f"/admin/login/?next={self.url}")
+        self._test_get_unauthorized(self.url)
 
     def test_get_contracts_update_permis(self):
         "Проверка, что пользователь без разрешения change_contracts не может изменить данные контракта."
-        self.client.force_login(self.user)
-        respons = self.client.get(self.url)
-
-        self.assertEqual(respons.status_code, 403)
+        self._test_get_not_permis(self.url)
 
 
 @override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
-class TestContractsDelete(TestCase):
+class TestContractsDelete(BaseContractsTestCase):
     """
     Тестирование представления ContractsDelete.
     """
 
-    def setUp(self) -> None:
-        self.service = Services.objects.create(
-            title="Title",
-            description="descrip",
-            cost=Decimal("500.00"),
-        )
-        self.file_contr = SimpleUploadedFile(
+    fixtures = ["contracts.json"]
+
+    @classmethod
+    def setUpTestData(cls) -> None:
+        super().setUpTestData()
+        file_contr = SimpleUploadedFile(
             name="test 1.pdf",
             content=b"test_contract",
             content_type="application/pdf",
         )
-        self.end_date = date.today() + timedelta(days=30)
-        self.contract = Contracts.objects.create(
-            title="Test Contr 1",
-            service=self.service,
-            file_doc=self.file_contr,
-            end_date=self.end_date,
-            cost=Decimal("500000.00"),
-        )
-        self.user = User.objects.create_user(username="test_user", password="pass")
-        con_type = ContentType.objects.get_for_model(Contracts)
-        self.permis_view = Permission.objects.get(
-            codename="view_contracts",
-            content_type=con_type,
-        )
-        self.permis_del = Permission.objects.get(
-            codename="delete_contracts",
-            content_type=con_type,
-        )
-        self.url = reverse("contracts:contracts_delete", args=[self.contract.pk])
+        cls.contract = Contracts.objects.get(pk=2)
+        cls.contract.file_doc.save("test 1.pdf", file_contr)
+        cls.url = reverse("contracts:contracts_delete", args=[2])
 
     def test_get_contracts_delete(self):
         "Проверка получения формы для удаления контракта."
@@ -360,13 +277,8 @@ class TestContractsDelete(TestCase):
 
     def test_get_contracts_delete_unauthorized(self):
         "Проверка перенаправления пользователя на страницу входа."
-        respons = self.client.get(self.url)
-        self.assertEqual(respons.status_code, 302)
-        self.assertRedirects(respons, f"/admin/login/?next={self.url}")
+        self._test_get_unauthorized(self.url)
 
     def test_get_contracts_delete_permis(self):
         "Проверка, что пользователь без разрешения delete_contracts не может удалить контракт."
-        self.client.force_login(self.user)
-        respons = self.client.get(self.url)
-
-        self.assertEqual(respons.status_code, 403)
+        self._test_get_not_permis(self.url)
