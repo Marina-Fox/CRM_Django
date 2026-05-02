@@ -96,12 +96,10 @@ class TestServicesDetailView(BaseServicesTestCase):
         self.user.user_permissions.add(self.permis_view)
         self.client.force_login(self.user)
         respons = self.client.get(self.url)
+        service = Services.objects.get(pk=1)
 
         self.assertEqual(respons.status_code, 200)
         self.assertTemplateUsed(respons, "services/services_detail.html")
-
-        service = Services.objects.get(pk=1)
-
         self.assertEqual(respons.context["object"].title, service.title)
         self.assertEqual(respons.context["object"].cost, service.cost)
 
@@ -187,7 +185,7 @@ class TestServicesUpdateView(BaseServicesTestCase):
         data = {
             "title": "Test Update",
             "description": "Test update",
-            "cost": Decimal("50.00"),
+            "cost": "50.00",
         }
         respons = self.client.post(self.url, data=data)
         service = Services.objects.get(pk=1)
