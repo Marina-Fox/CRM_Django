@@ -240,10 +240,10 @@ class TestLeadDelete(BaseLeadTestCase):
         self.assertEqual(respons.status_code, 302)
         self.assertRedirects(respons, reverse("clients:clients_list"))
 
-    def test_get_advertisement_delete_unauthorized(self):
+    def test_get_lead_delete_unauthorized(self):
         "Проверка перенаправления пользователя на страницу входа."
         self._test_get_unauthorized(self.url)
 
-    def test_get_advertisement_delete_permis(self):
+    def test_get_lead_delete_permis(self):
         "Проверка, что пользователь без разрешения delete_lead не может удалить потенциального клиента."
         self._test_get_not_permis(self.url)
