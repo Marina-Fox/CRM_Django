@@ -46,7 +46,7 @@ class BaseContractsTestCase(TestCase):
         respons = self.client.get(url)
 
         self.assertEqual(respons.status_code, 302)
-        self.assertRedirects(respons, f"/admin/login/?next={url}")
+        self.assertRedirects(respons, f"/users/login/?next={url}")
 
     def _test_get_not_permis(self, url):
         "Проверка, что пользователь без нужного разрешения не может просмотреть соответствующую страницу."
