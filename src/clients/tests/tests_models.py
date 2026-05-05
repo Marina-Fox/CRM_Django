@@ -30,7 +30,7 @@ class TestLeadModel(TestCase):
             first_name="Петр",
             last_name="Петрович",
             patronymic="",
-            phone="89091234567",
+            phone="+79091234567",
             email="exampl@mail.com",
             advertisement=advertisement,
         )
@@ -39,7 +39,7 @@ class TestLeadModel(TestCase):
         self.assertEqual(lead.first_name, "Петр")
         self.assertEqual(lead.last_name, "Петрович")
         self.assertEqual(str(lead), "Петр Петрович")
-        self.assertEqual(lead.phone, "89091234567")
+        self.assertEqual(lead.phone, "+79091234567")
         self.assertEqual(lead.email, "exampl@mail.com")
         self.assertEqual(lead.advertisement.title, advertisement.title)
 
