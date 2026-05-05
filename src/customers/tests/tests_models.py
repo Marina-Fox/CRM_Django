@@ -86,7 +86,10 @@ class TestCustomersModel(TestCase):
         with self.assertRaises(ValidationError):
             customer.full_clean()
 
+    def test_model_customers_uniq(self):
+        "Сочетание lead + contract должно быть уникально."
+        Customers.objects.create(lead=self.lead, contract=self.contract)
+        customer = Customers(lead=self.lead, contract=self.contract)
 
-# тесты:
-# - с 1 клиентом можно заключить несколько контрактов
-# - 1 контракт заключен только с 1 клиентом
+        with self.assertRaises(ValidationError):
+            customer.full_clean()
