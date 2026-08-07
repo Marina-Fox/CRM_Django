@@ -23,10 +23,18 @@ services:
       - .env.app
     ports:
       - "8000:8000"
-    volumes:
-      - ./dist/media:/app/media
     networks:
       - net_app
+    command: >
+      sh -c "
+        python manage.py migrate --noinput &&
+        python manage.py create_groups &&
+        python manage.py create_superuser &&
+        gunicorn --bind 0.0.0.0:8000 crm.wsgi:application
+      "
+    volumes:
+      - ./dist/media:/app/media
+      - ./dist/static:/project/dist/static
     depends_on:
       db:
         condition: service_healthy

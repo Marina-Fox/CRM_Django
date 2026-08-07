@@ -19,7 +19,7 @@ class ServicesList(PermissionRequiredMixin, LoginRequiredMixin, ListView):
     """
 
     permission_required = ["services.view_services"]
-    login_url = "/admin/login/"
+    login_url = "/users/login/"
     queryset = Services.objects.all()
     context_object_name = "services"
     # paginate_by = 10
@@ -32,7 +32,7 @@ class ServicesCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     """
 
     permission_required = ["services.add_services"]
-    login_url = "/admin/login/"
+    login_url = "/users/login/"
     model = Services
     form_class = ServicesForm
     template_name = "services/services_create.html"
@@ -47,7 +47,7 @@ class ServicesDetail(PermissionRequiredMixin, LoginRequiredMixin, DetailView):
     """
 
     permission_required = ["services.view_services"]
-    login_url = "/admin/login/"
+    login_url = "/users/login/"
     model = Services
     template_name = "services/services_detail.html"
 
@@ -58,7 +58,7 @@ class ServicesUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     """
 
     permission_required = ["services.change_services"]
-    login_url = "/admin/login/"
+    login_url = "/users/login/"
     model = Services
     form_class = ServicesForm
     template_name = "services/services_edit.html"
@@ -73,7 +73,7 @@ class ServicesDelete(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
     """
 
     permission_required = ["services.delete_services"]
-    login_url = "/admin/login/"
+    login_url = "/users/login/"
     model = Services
     template_name = "services/services_delete.html"
     success_url = reverse_lazy("services:services_list")

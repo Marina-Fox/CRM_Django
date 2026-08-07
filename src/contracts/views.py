@@ -19,7 +19,7 @@ class ContractsList(PermissionRequiredMixin, LoginRequiredMixin, ListView):
     """
 
     permission_required = ["contracts.view_contracts"]
-    login_url = "/admin/login/"
+    login_url = "/users/login/"
     queryset = Contracts.objects.all()
     template_name = "contracts/contracts_list.html"
     context_object_name = "contracts"
@@ -31,7 +31,7 @@ class ContractsDetail(PermissionRequiredMixin, LoginRequiredMixin, DetailView):
     """
 
     permission_required = ["contracts.view_contracts"]
-    login_url = "/admin/login/"
+    login_url = "/users/login/"
     model = Contracts
     template_name = "contracts/contracts_detail.html"
 
@@ -42,7 +42,7 @@ class ContractsCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     """
 
     permission_required = ["contracts.add_contracts"]
-    login_url = "/admin/login/"
+    login_url = "/users/login/"
     model = Contracts
     form_class = ContractsForm
     template_name = "contracts/contracts_create.html"
@@ -57,7 +57,7 @@ class ContractsUptade(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     """
 
     permission_required = ["contracts.change_contracts"]
-    login_url = "/admin/login/"
+    login_url = "/users/login/"
     model = Contracts
     form_class = ContractsForm
     template_name = "contracts/contracts_edit.html"
@@ -72,7 +72,7 @@ class ContractsDelete(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
     """
 
     permission_required = ["contracts.delete_contracts"]
-    login_url = "/admin/login/"
+    login_url = "/users/login/"
     model = Contracts
     template_name = "contracts/contracts_delete.html"
     success_url = reverse_lazy("contracts:contracts_list")

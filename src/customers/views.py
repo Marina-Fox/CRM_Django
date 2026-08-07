@@ -19,7 +19,7 @@ class CustomersList(PermissionRequiredMixin, LoginRequiredMixin, ListView):
     """
 
     permission_required = ["customers.view_customers"]
-    login_url = "/admin/login/"
+    login_url = "/users/login/"
     queryset = Customers.objects.all()
     template_name = "customers/customers_list.html"
     context_object_name = "customers"
@@ -31,7 +31,7 @@ class CustomersDetail(PermissionRequiredMixin, LoginRequiredMixin, DetailView):
     """
 
     permission_required = ["customers.view_customers"]
-    login_url = "/admin/login/"
+    login_url = "/users/login/"
     model = Customers
     template_name = "customers/customers_detail.html"
 
@@ -42,7 +42,7 @@ class CustomersCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     """
 
     permission_required = ["customers.add_customers"]
-    login_url = "/admin/login/"
+    login_url = "/users/login/"
     model = Customers
     form_class = CustomersForm
     template_name = "customers/customers_create.html"
@@ -57,7 +57,7 @@ class CustomersUptade(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     """
 
     permission_required = ["customers.change_customers"]
-    login_url = "/admin/login/"
+    login_url = "/users/login/"
     model = Customers
     form_class = CustomersForm
     template_name = "customers/customers_edit.html"
@@ -72,7 +72,7 @@ class CustomersDelete(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
     """
 
     permission_required = ["customers.delete_customers"]
-    login_url = "/admin/login/"
+    login_url = "/users/login/"
     model = Customers
     template_name = "customers/customers_delete.html"
     success_url = reverse_lazy("customers:customers_list")

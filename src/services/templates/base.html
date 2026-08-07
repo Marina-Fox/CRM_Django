@@ -27,7 +27,7 @@
                 <span><i class="fas fa-microchip"></i></span><span class="ml-1"> Услуги</span>
             </a></li>
             {% endif %}
-            {% if perms.advertisements.view_advertisement %}
+            {% if perms.ad_campaign.view_advertisement %}
             <li><a href="/ads/" class="bar-item text-decoration-none px-3 py-3 d-block">
                 <span><i class="fas fa-ad"></i></span><span class="ml-1"> Рекламные компании</span>
             </a></li>
@@ -50,9 +50,16 @@
             <li>
                 <hr>
             </li>
-            <li><a href="/accounts/logout" class="bar-item text-decoration-none px-3 py-3 d-block">
-                <span><i class="fas fa-sign-out-alt"></i></span><span class="px-1"> Выход</span>
-            </a></li>
+            <li>
+                <form method="post" action="/users/logout/" class="d-inline m-0 p-0" style="display: contents;">
+                    {% csrf_token %}
+                    <button type="submit" class="bar-item text-decoration-none px-3 py-3 d-block text-reset border-0 bg-transparent"
+                            style="cursor: pointer;">
+                        <span><i class="fas fa-sign-out-alt"></i></span>
+                        <span class="px-1">Выход</span>
+                    </button>
+                </form>
+            </li>
         </ul>
     </div>
     <div class="content px-3 pt-4">

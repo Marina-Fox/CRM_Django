@@ -19,7 +19,7 @@ class LeadList(PermissionRequiredMixin, LoginRequiredMixin, ListView):
     """
 
     permission_required = ["clients.view_lead"]
-    login_url = "/admin/login/"
+    login_url = "/users/login/"
     queryset = Lead.objects.all()
     template_name = "clients/leads_list.html"
     context_object_name = "leads"
@@ -31,7 +31,7 @@ class LeadDetail(PermissionRequiredMixin, LoginRequiredMixin, DetailView):
     """
 
     permission_required = ["clients.view_lead"]
-    login_url = "/admin/login/"
+    login_url = "/users/login/"
     model = Lead
     template_name = "clients/leads_detail.html"
 
@@ -42,7 +42,7 @@ class LeadCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     """
 
     permission_required = ["clients.add_lead"]
-    login_url = "/admin/login/"
+    login_url = "/users/login/"
     model = Lead
     form_class = LeadForm
     template_name = "clients/leads_create.html"
@@ -57,7 +57,7 @@ class LeadUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     """
 
     permission_required = ["clients.change_lead"]
-    login_url = "/admin/login/"
+    login_url = "/users/login/"
     model = Lead
     form_class = LeadForm
     template_name = "clients/leads_edit.html"
@@ -72,7 +72,7 @@ class LeadDelete(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
     """
 
     permission_required = ["clients.delete_lead"]
-    login_url = "/admin/login/"
+    login_url = "/users/login/"
     model = Lead
     template_name = "clients/leads_delete.html"
     success_url = reverse_lazy("clients:clients_list")

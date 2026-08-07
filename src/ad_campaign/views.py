@@ -19,7 +19,7 @@ class AdvertisementList(PermissionRequiredMixin, LoginRequiredMixin, ListView):
     """
 
     permission_required = ["ad_campaign.view_advertisement"]
-    login_url = "/admin/login/"
+    login_url = "/users/login/"
     queryset = Advertisement.objects.all()
     context_object_name = "ads"
     template_name = "ad_campaign/ads_list.html"
@@ -31,7 +31,7 @@ class AdvertisementCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateVie
     """
 
     permission_required = ["ad_campaign.add_advertisement"]
-    login_url = "/admin/login/"
+    login_url = "/users/login/"
     model = Advertisement
     form_class = AdvertisementForm
     template_name = "ad_campaign/ads_create.html"
@@ -46,7 +46,7 @@ class AdvertisementDetail(PermissionRequiredMixin, LoginRequiredMixin, DetailVie
     """
 
     permission_required = ["ad_campaign.view_advertisement"]
-    login_url = "/admin/login/"
+    login_url = "/users/login/"
     model = Advertisement
     template_name = "ad_campaign/ads_detail.html"
 
@@ -57,7 +57,7 @@ class AdvertisementUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateVie
     """
 
     permission_required = ["ad_campaign.change_advertisement"]
-    login_url = "/admin/login/"
+    login_url = "/users/login/"
     model = Advertisement
     form_class = AdvertisementForm
     template_name = "ad_campaign/ads_edit.html"
@@ -72,7 +72,7 @@ class AdvertisementDelete(PermissionRequiredMixin, LoginRequiredMixin, DeleteVie
     """
 
     permission_required = ["ad_campaign.delete_advertisement"]
-    login_url = "/admin/login/"
+    login_url = "/users/login/"
     model = Advertisement
     template_name = "ad_campaign/ads_delete.html"
     success_url = reverse_lazy("ad_campaign:ad_list")

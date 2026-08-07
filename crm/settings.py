@@ -39,6 +39,9 @@ DEBUG = os.getenv("DEBUG", "True")
 ALLOWED_HOSTS = ["*"]
 
 
+LOGIN_REDIRECT_URL = "/"
+LOGIN_URL = "login"
+
 # # Включение HSTS и других мер безопасности
 # SECURE_SSL_REDIRECT = True
 # SESSION_COOKIE_SECURE = True
@@ -60,6 +63,7 @@ INSTALLED_APPS = [
     "src.ad_campaign.apps.AdCampaignConfig",
     "src.contracts.apps.ContractsConfig",
     "src.customers.apps.CustomersConfig",
+    "src.users.apps.UsersConfig",
 ]
 
 MIDDLEWARE = [
