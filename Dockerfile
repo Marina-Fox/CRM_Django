@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.12-slim-bookworm
 
 WORKDIR /project
 
@@ -13,5 +13,6 @@ RUN poetry install --without dev --no-root
 
 COPY . .
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "crm.wsgi:application"]
+# CMD ["gunicorn", "--bind", "0.0.0.0:8000", "crm.wsgi:application"]
 # ["uvicorn", "crm.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
+# python manage.py migrate && python manage.py collectstatic --noinput &&
