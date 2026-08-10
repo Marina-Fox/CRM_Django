@@ -25,5 +25,9 @@ class Lead(models.Model):
         "contracts.Contracts", verbose_name="Контракты", through="customers.Customers"
     )
 
+    class Meta:
+        verbose_name = "потенциальный клиент"
+        verbose_name_plural = "потенциальные клиенты"
+
     def __str__(self):
         return f"{self.first_name} {self.last_name}"

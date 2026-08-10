@@ -16,5 +16,9 @@ class Services(models.Model):
         validators=[MinValueValidator(Decimal("0.01"))],
     )
 
+    class Meta:
+        verbose_name = "услуга"
+        verbose_name_plural = "услуги"
+
     def __str__(self):
         return self.title

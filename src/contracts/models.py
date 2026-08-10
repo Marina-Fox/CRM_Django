@@ -29,6 +29,10 @@ class Contracts(models.Model):
         validators=[MinValueValidator(Decimal("0.01"))],
     )
 
+    class Meta:
+        verbose_name = "контракт"
+        verbose_name_plural = "контракты"
+
     def __str__(self):
         return f"{self.title} {self.service.title}"
 
