@@ -8,6 +8,7 @@ class Command(BaseCommand):
     """
     Создание групп пользователей.
     """
+
     def handle(self, *args: Any, **options: Any) -> str | None:
         groups_data = {
             "Admins": ["view_user", "change_user", "add_user", "delete_user"],

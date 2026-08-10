@@ -9,10 +9,12 @@ from django.core.management.base import BaseCommand, CommandError
 
 load_dotenv(dotenv_path=".env.superuser")
 
+
 class Command(BaseCommand):
     """
     Создание суперпользователя.
     """
+
     def handle(self, *args: Any, **options: Any) -> str | None:
         User = get_user_model()
 
@@ -20,14 +22,10 @@ class Command(BaseCommand):
         password = os.getenv("DJANGO_SUPERUSER_PASSWORD")
 
         if not username:
-            raise CommandError(
-                "DJANGO_SUPERUSER_USERNAME не определен"
-            )
+            raise CommandError("DJANGO_SUPERUSER_USERNAME не определен")
 
         if not password:
-            raise CommandError(
-                "DJANGO_SUPERUSER_PASSWORD не определен"
-            )
+            raise CommandError("DJANGO_SUPERUSER_PASSWORD не определен")
 
         user = User.objects.filter(username=username).first()
 
@@ -43,7 +41,4 @@ class Command(BaseCommand):
             User.USERNAME_FIELD: username,
         }
 
-        user = User.objects.create_superuser(
-            password=password,
-            **user_data
-        )
+        user = User.objects.create_superuser(password=password, **user_data)
