@@ -53,47 +53,8 @@ services:
     networks:
       - net_app
 
-  prometheus:
-    container_name: prometheus
-    image: prom/prometheus:v2.35.0
-    expose:
-      - 9090
-    depends_on:
-      - app
-    volumes:
-      - ./prometheus/:/etc/prometheus/
-      - prometheus_data:/prometheus
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-
-  loki:
-    container_name: loki
-    image: grafana/loki:v2.8.1
-    restart: always
-    volumes:
-      - ./loki-config.yaml:/etc/loki/local-config.yaml
-    expose:
-      - 3100
-
-  grafana:
-    container_name: grafana
-    image: grafana/grafana:latest
-    env_file:
-      - .env.grafana
-    depends_on:
-      - prometheus
-      # - loki
-    ports:
-      - "3000:3000"
-    # volumes:
-    #   - ./grafana/provisioning/:/etc/grafana/provisioning/
-    #   - grafana_storage:/var/lib/grafana
-
 networks:
   net_app:
 
 volumes:
   postgres_data:
-  prometheus_data:
-  grafana_storage:
