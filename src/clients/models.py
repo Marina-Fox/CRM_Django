@@ -17,6 +17,7 @@ class Lead(models.Model):
     advertisement = models.ForeignKey(
         Advertisement,
         verbose_name="Рекламная кампания",
+        related_name = "leads",
         on_delete=models.SET_DEFAULT,
         default=None,
         null=True,
