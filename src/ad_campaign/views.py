@@ -1,3 +1,8 @@
+from decimal import Decimal
+
+from django.db.models import Count, DecimalField, Sum, F, ExpressionWrapper
+from django.db.models.functions import Round
+from django.db.models.query import QuerySet
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.views.generic import (
@@ -76,3 +81,40 @@ class AdvertisementDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteVie
     model = Advertisement
     template_name = "ad_campaign/ads_delete.html"
     success_url = reverse_lazy("ad_campaign:ad_list")
+
+
+class Statistic(LoginRequiredMixin, ListView):
+    """
+    Просмотр статистики рекламных кампаний.
+    """
+
+    login_url = "/users/login/"
+    context_object_name = "ads"
+    template_name = "ad_campaign/ads_statistic.html"
+
+    def get_queryset(self) -> QuerySet:
+        money_field = DecimalField(
+            max_digits=14,
+            decimal_places=2,
+        )
+
+        return (
+            Advertisement.objects.annotate(
+                leads_count=Count("leads", distinct=True),
+                customers_count=Count("leads__customers", distinct=True),
+                revenue=Sum(
+                    "leads__customers__contract__cost",
+                    default=Decimal("0.00"),
+                    output_field=money_field,
+                ),
+            )
+            .annotate(
+                profit=Round(
+                    ExpressionWrapper(
+                        (F("revenue") - F("budget")) / F("budget") * 100,
+                        output_field=money_field,
+                    )
+                )
+            )
+            .order_by("title")
+        )
