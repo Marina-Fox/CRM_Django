@@ -8,7 +8,6 @@ admin.site.unregister(User)
 @admin.register(User)
 class AdminUser(UserAdmin):
     list_display = ("username", "email", "first_name", "last_name", "is_staff")
-    readonly_fields = ("last_login", "date_joined")
     fieldsets = (
         (
             None,
@@ -34,7 +33,10 @@ class AdminUser(UserAdmin):
             {
                 "fields": (
                     "is_active",
+                    "is_staff",
+                    "is_superuser",
                     "groups",
+                    "user_permissions",
                 ),
             },
         ),
@@ -48,3 +50,20 @@ class AdminUser(UserAdmin):
             },
         ),
     )
+
+    def get_readonly_fields(self, request, obj=None):
+        readonly_fields = [
+            "last_login",
+            "date_joined",
+        ]
+
+        if not request.user.is_superuser:
+            readonly_fields.extend(
+                [
+                    "is_staff",
+                    "is_superuser",
+                    "user_permissions",
+                ]
+            )
+
+        return tuple(readonly_fields)
