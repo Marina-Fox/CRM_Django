@@ -51,7 +51,6 @@ LOGIN_URL = "login"
 # Application definition
 
 INSTALLED_APPS = [
-    "django_prometheus",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -67,7 +66,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "django_prometheus.middleware.PrometheusBeforeMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -76,7 +74,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "django_prometheus.middleware.PrometheusAfterMiddleware",
 ]
 
 ROOT_URLCONF = "crm.urls"
@@ -159,63 +156,63 @@ STATIC_ROOT = os.path.join(BASE_DIR, "dist/static")
 MEDIA_URL = "/media/"
 MEDIA_ROOT = "/app/media"
 
-LOGLEVEL = os.getenv("LOGLEVEL", "info").upper()
+# LOGLEVEL = os.getenv("LOGLEVEL", "info").upper()
 
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "verbose": {
-            "format": "%(asctime)s [%(name)s:%(levelname)s]: %(message)s",
-            "datefmt": "%Y-%m-%d %H:%M:%S",
-        },
-    },
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-            "formatter": "verbose",
-        },
-        "null": {
-            "class": "logging.NullHandler",
-        },
-        # "file": {
-        #     "class": "logging.handlers.RotatingFileHandler",
-        #     "filename": BASE_DIR / "logs/app.log",
-        #     "maxBytes": 1024 * 1024 * 5,
-        #     "backupCount": 3,
-        #     "formatter": "verbose",
-        # },
-        # 'loki': {
-        #     'class': 'python_loki.LokiHandler',
-        #     'url': os.getenv('LOKI_ENDPOINT'),
-        #     'tags': {'application': 'crm_backend'},
-        #     'version': '1',
-        # },
-    },
-    "root": {
-        "handlers": ["console"],
-        "level": LOGLEVEL,
-    },
-    "loggers": {
-        # "log_file": {
-        #     "handlers": ["file"],
-        #     "level": LOGLEVEL,
-        #     "propagate": True,
-        # },
-        "ci": {
-            "handlers": ["console"],
-            "level": LOGLEVEL,
-            "propagate": False,
-        },
-        "django.request": {
-            "handlers": ["null"],
-            "level": "ERROR",
-            "propagate": False,
-        },
-        # 'log_loki': {
-        #     'handlers': ['loki'],
-        #     'level': LOGLEVEL,
-        #     'propagate': True,
-        # }
-    },
-}
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "formatters": {
+#         "verbose": {
+#             "format": "%(asctime)s [%(name)s:%(levelname)s]: %(message)s",
+#             "datefmt": "%Y-%m-%d %H:%M:%S",
+#         },
+#     },
+#     "handlers": {
+#         "console": {
+#             "class": "logging.StreamHandler",
+#             "formatter": "verbose",
+#         },
+#         "null": {
+#             "class": "logging.NullHandler",
+#         },
+#         # "file": {
+#         #     "class": "logging.handlers.RotatingFileHandler",
+#         #     "filename": BASE_DIR / "logs/app.log",
+#         #     "maxBytes": 1024 * 1024 * 5,
+#         #     "backupCount": 3,
+#         #     "formatter": "verbose",
+#         # },
+#         # 'loki': {
+#         #     'class': 'python_loki.LokiHandler',
+#         #     'url': os.getenv('LOKI_ENDPOINT'),
+#         #     'tags': {'application': 'crm_backend'},
+#         #     'version': '1',
+#         # },
+#     },
+#     "root": {
+#         "handlers": ["console"],
+#         "level": LOGLEVEL,
+#     },
+#     "loggers": {
+#         # "log_file": {
+#         #     "handlers": ["file"],
+#         #     "level": LOGLEVEL,
+#         #     "propagate": True,
+#         # },
+#         "ci": {
+#             "handlers": ["console"],
+#             "level": LOGLEVEL,
+#             "propagate": False,
+#         },
+#         "django.request": {
+#             "handlers": ["null"],
+#             "level": "ERROR",
+#             "propagate": False,
+#         },
+#         # 'log_loki': {
+#         #     'handlers': ['loki'],
+#         #     'level': LOGLEVEL,
+#         #     'propagate': True,
+#         # }
+#     },
+# }
