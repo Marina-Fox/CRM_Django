@@ -10,7 +10,10 @@ class CustomLoginView(LoginView):
     template_name = "users/login.html"
 
     def get_success_url(self) -> str:
-        if self.request.user.groups.filter(name="Admins").exists() or self.request.user.is_superuser:
+        if (
+            self.request.user.groups.filter(name="Admins").exists()
+            or self.request.user.is_superuser
+        ):
             return reverse_lazy("admin:index")
 
         return reverse_lazy("home")

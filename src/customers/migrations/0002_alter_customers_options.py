@@ -4,14 +4,16 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('customers', '0001_initial'),
+        ("customers", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='customers',
-            options={'verbose_name': 'активный клиент', 'verbose_name_plural': 'активные клиенты'},
+            name="customers",
+            options={
+                "verbose_name": "активный клиент",
+                "verbose_name_plural": "активные клиенты",
+            },
         ),
     ]

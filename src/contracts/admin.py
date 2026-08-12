@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from .models import Contracts
 
+
 # Register your models here.
 @admin.register(Contracts)
 class AdminContracts(admin.ModelAdmin):

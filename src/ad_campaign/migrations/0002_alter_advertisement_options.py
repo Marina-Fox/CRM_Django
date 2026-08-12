@@ -4,14 +4,16 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('ad_campaign', '0001_initial'),
+        ("ad_campaign", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='advertisement',
-            options={'verbose_name': 'рекламная кампания', 'verbose_name_plural': 'рекламные кампании'},
+            name="advertisement",
+            options={
+                "verbose_name": "рекламная кампания",
+                "verbose_name_plural": "рекламные кампании",
+            },
         ),
     ]

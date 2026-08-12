@@ -4,14 +4,16 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('clients', '0002_lead_contracts'),
+        ("clients", "0002_lead_contracts"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='lead',
-            options={'verbose_name': 'потенциальный клиент', 'verbose_name_plural': 'потенциальные клиенты'},
+            name="lead",
+            options={
+                "verbose_name": "потенциальный клиент",
+                "verbose_name_plural": "потенциальные клиенты",
+            },
         ),
     ]
