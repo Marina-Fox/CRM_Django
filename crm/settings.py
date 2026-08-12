@@ -29,8 +29,8 @@ IS_CI = bool(os.environ.get("CI")) or bool(os.environ.get("GITHUB_ACTIONS"))
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-1l+3#&gp7lgoa#zdd6lj3h_zzkp#bcw@s-fv3_t!6v!!8gq9m("
-SECRET_KEY = os.getenv("SECRET_KEY", SECRET_KEY)
+# SECRET_KEY = "django-insecure-1l+3#&gp7lgoa#zdd6lj3h_zzkp#bcw@s-fv3_t!6v!!8gq9m("
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
