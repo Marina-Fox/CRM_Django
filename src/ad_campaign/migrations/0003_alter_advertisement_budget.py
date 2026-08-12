@@ -6,15 +6,20 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('ad_campaign', '0002_alter_advertisement_options'),
+        ("ad_campaign", "0002_alter_advertisement_options"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='advertisement',
-            name='budget',
-            field=models.DecimalField(decimal_places=2, default=Decimal('0.00'), max_digits=10, validators=[django.core.validators.MinValueValidator(Decimal('0.01'))], verbose_name='Бюджет'),
+            model_name="advertisement",
+            name="budget",
+            field=models.DecimalField(
+                decimal_places=2,
+                default=Decimal("0.00"),
+                max_digits=10,
+                validators=[django.core.validators.MinValueValidator(Decimal("0.01"))],
+                verbose_name="Бюджет",
+            ),
         ),
     ]

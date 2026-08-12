@@ -5,16 +5,22 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('ad_campaign', '0002_alter_advertisement_options'),
-        ('clients', '0003_alter_lead_options'),
+        ("ad_campaign", "0002_alter_advertisement_options"),
+        ("clients", "0003_alter_lead_options"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='lead',
-            name='advertisement',
-            field=models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.SET_DEFAULT, related_name='leads', to='ad_campaign.advertisement', verbose_name='Рекламная кампания'),
+            model_name="lead",
+            name="advertisement",
+            field=models.ForeignKey(
+                default=None,
+                null=True,
+                on_delete=django.db.models.deletion.SET_DEFAULT,
+                related_name="leads",
+                to="ad_campaign.advertisement",
+                verbose_name="Рекламная кампания",
+            ),
         ),
     ]

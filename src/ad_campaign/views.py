@@ -98,23 +98,23 @@ class Statistic(LoginRequiredMixin, ListView):
             decimal_places=2,
         )
 
-        return (Advertisement.objects
-                .annotate(
-                    leads_count=Count("leads", distinct=True),
-                    customers_count=Count("leads__customers", distinct=True),
-                    revenue=Sum(
-                        "leads__customers__contract__cost",
-                        default=Decimal("0.00"),
+        return (
+            Advertisement.objects.annotate(
+                leads_count=Count("leads", distinct=True),
+                customers_count=Count("leads__customers", distinct=True),
+                revenue=Sum(
+                    "leads__customers__contract__cost",
+                    default=Decimal("0.00"),
+                    output_field=money_field,
+                ),
+            )
+            .annotate(
+                profit=Round(
+                    ExpressionWrapper(
+                        (F("revenue") - F("budget")) / F("budget") * 100,
                         output_field=money_field,
                     )
                 )
-                .annotate(
-                    profit=Round(
-                        ExpressionWrapper(
-                            (F("revenue") - F("budget")) / F("budget") * 100,
-                            output_field=money_field,
-                        )
-                    )
-                )
-                .order_by("title")
             )
+            .order_by("title")
+        )

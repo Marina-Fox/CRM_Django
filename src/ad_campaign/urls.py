@@ -17,6 +17,5 @@ urlpatterns = [
     path("<int:pk>/", AdvertisementDetail.as_view(), name="ad_detail"),
     path("<int:pk>/edit/", AdvertisementUpdate.as_view(), name="ad_update"),
     path("<int:pk>/delete/", AdvertisementDelete.as_view(), name="ad_delete"),
-
-    path("statistic/", Statistic.as_view(), name="statistic")
+    path("statistic/", Statistic.as_view(), name="statistic"),
 ]

@@ -18,7 +18,7 @@ class Advertisement(models.Model):
         max_digits=10,
         decimal_places=2,
         validators=[MinValueValidator(Decimal("0.01"))],
-        default=Decimal("0.00")
+        default=Decimal("0.00"),
     )
 
     class Meta:
