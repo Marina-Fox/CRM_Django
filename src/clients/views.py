@@ -13,7 +13,7 @@ from .form import LeadForm
 
 
 # Create your views here.
-class LeadList(PermissionRequiredMixin, LoginRequiredMixin, ListView):
+class LeadList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     """
     Отображение списка потенциальных клиентов.
     """
@@ -25,7 +25,7 @@ class LeadList(PermissionRequiredMixin, LoginRequiredMixin, ListView):
     context_object_name = "leads"
 
 
-class LeadDetail(PermissionRequiredMixin, LoginRequiredMixin, DetailView):
+class LeadDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     """
     Информация о потенциальном клиенте.
     """
@@ -36,7 +36,7 @@ class LeadDetail(PermissionRequiredMixin, LoginRequiredMixin, DetailView):
     template_name = "clients/leads_detail.html"
 
 
-class LeadCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
+class LeadCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     """
     Создание нового потенциального клиента.
     """
@@ -51,7 +51,7 @@ class LeadCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
         return reverse_lazy("clients:clients_detail", args=[self.object.pk])
 
 
-class LeadUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
+class LeadUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     """
     Редактирование потенциального клиента.
     """
@@ -66,7 +66,7 @@ class LeadUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
         return reverse_lazy("clients:clients_detail", args=[self.object.pk])
 
 
-class LeadDelete(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
+class LeadDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     """
     Удаление потенциального клиента.
     """

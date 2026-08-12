@@ -13,7 +13,7 @@ from .form import AdvertisementForm
 
 
 # Create your views here.
-class AdvertisementList(PermissionRequiredMixin, LoginRequiredMixin, ListView):
+class AdvertisementList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     """
     Отображение списка рекламных кампаний.
     """
@@ -25,7 +25,7 @@ class AdvertisementList(PermissionRequiredMixin, LoginRequiredMixin, ListView):
     template_name = "ad_campaign/ads_list.html"
 
 
-class AdvertisementCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
+class AdvertisementCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     """
     Создание новой рекламной кампании.
     """
@@ -40,7 +40,7 @@ class AdvertisementCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateVie
         return reverse_lazy("ad_campaign:ad_detail", args=[self.object.pk])
 
 
-class AdvertisementDetail(PermissionRequiredMixin, LoginRequiredMixin, DetailView):
+class AdvertisementDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     """
     Информация о рекламной кампании.
     """
@@ -51,7 +51,7 @@ class AdvertisementDetail(PermissionRequiredMixin, LoginRequiredMixin, DetailVie
     template_name = "ad_campaign/ads_detail.html"
 
 
-class AdvertisementUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
+class AdvertisementUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     """
     Редактирование рекламной кампании.
     """
@@ -66,7 +66,7 @@ class AdvertisementUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateVie
         return reverse_lazy("ad_campaign:ad_detail", args=[self.object.pk])
 
 
-class AdvertisementDelete(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
+class AdvertisementDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     """
     Удаление рекламной кампании.
     """
