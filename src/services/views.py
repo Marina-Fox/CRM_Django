@@ -13,7 +13,7 @@ from .form import ServicesForm
 
 
 # Create your views here.
-class ServicesList(PermissionRequiredMixin, LoginRequiredMixin, ListView):
+class ServicesList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     """
     Отображение списка услуг.
     """
@@ -26,7 +26,7 @@ class ServicesList(PermissionRequiredMixin, LoginRequiredMixin, ListView):
     # ordering = ["created_at"]
 
 
-class ServicesCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
+class ServicesCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     """
     Создание новой услуги.
     """
@@ -41,7 +41,7 @@ class ServicesCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
         return reverse_lazy("services:services_detail", args=[self.object.pk])
 
 
-class ServicesDetail(PermissionRequiredMixin, LoginRequiredMixin, DetailView):
+class ServicesDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     """
     Информация о выбранной услуге.
     """
@@ -52,7 +52,7 @@ class ServicesDetail(PermissionRequiredMixin, LoginRequiredMixin, DetailView):
     template_name = "services/services_detail.html"
 
 
-class ServicesUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
+class ServicesUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     """
     Редактирование услуги.
     """
@@ -67,7 +67,7 @@ class ServicesUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
         return reverse_lazy("services:services_detail", args=[self.object.pk])
 
 
-class ServicesDelete(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
+class ServicesDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     """
     Удаление услуги
     """

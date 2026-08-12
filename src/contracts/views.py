@@ -13,7 +13,7 @@ from .form import ContractsForm
 
 
 # Create your views here.
-class ContractsList(PermissionRequiredMixin, LoginRequiredMixin, ListView):
+class ContractsList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     """
     Отображение списка контрактов.
     """
@@ -25,7 +25,7 @@ class ContractsList(PermissionRequiredMixin, LoginRequiredMixin, ListView):
     context_object_name = "contracts"
 
 
-class ContractsDetail(PermissionRequiredMixin, LoginRequiredMixin, DetailView):
+class ContractsDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     """
     Информация о контракте.
     """
@@ -36,7 +36,7 @@ class ContractsDetail(PermissionRequiredMixin, LoginRequiredMixin, DetailView):
     template_name = "contracts/contracts_detail.html"
 
 
-class ContractsCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
+class ContractsCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     """
     Добавление нового контракта.
     """
@@ -51,7 +51,7 @@ class ContractsCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
         return reverse_lazy("contracts:contracts_detail", args=[self.object.pk])
 
 
-class ContractsUptade(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
+class ContractsUptade(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     """
     Редактирование контракта.
     """
@@ -66,7 +66,7 @@ class ContractsUptade(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
         return reverse_lazy("contracts:contracts_detail", args=[self.object.pk])
 
 
-class ContractsDelete(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
+class ContractsDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     """
     Удаление контракта.
     """

@@ -20,5 +20,9 @@ class Advertisement(models.Model):
         validators=[MinValueValidator(Decimal("0.01"))],
     )
 
+    class Meta:
+        verbose_name = "рекламная кампания"
+        verbose_name_plural = "рекламные кампании"
+
     def __str__(self):
         return self.title

@@ -13,7 +13,7 @@ from .form import CustomersForm
 
 
 # Create your views here.
-class CustomersList(PermissionRequiredMixin, LoginRequiredMixin, ListView):
+class CustomersList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     """
     Отображение списка активных клиентов.
     """
@@ -25,7 +25,7 @@ class CustomersList(PermissionRequiredMixin, LoginRequiredMixin, ListView):
     context_object_name = "customers"
 
 
-class CustomersDetail(PermissionRequiredMixin, LoginRequiredMixin, DetailView):
+class CustomersDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     """
     Информация о потенциальном клиенте.
     """
@@ -36,7 +36,7 @@ class CustomersDetail(PermissionRequiredMixin, LoginRequiredMixin, DetailView):
     template_name = "customers/customers_detail.html"
 
 
-class CustomersCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
+class CustomersCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     """
     Добавление нового активного клиента.
     """
@@ -51,7 +51,7 @@ class CustomersCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
         return reverse_lazy("customers:customers_detail", args=[self.object.pk])
 
 
-class CustomersUptade(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
+class CustomersUptade(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     """
     Редактирование активного клиента.
     """
@@ -66,7 +66,7 @@ class CustomersUptade(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
         return reverse_lazy("customers:customers_detail", args=[self.object.pk])
 
 
-class CustomersDelete(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
+class CustomersDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     """
     Удаление активного клиента.
     """

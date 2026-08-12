@@ -11,4 +11,6 @@ class Customers(models.Model):
     )
 
     class Meta:
+        verbose_name = "активный клиент"
+        verbose_name_plural = "активные клиенты"
         unique_together = ["lead", "contract"]

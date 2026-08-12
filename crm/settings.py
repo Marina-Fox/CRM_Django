@@ -182,12 +182,12 @@ MEDIA_ROOT = "/app/media"
 #         #     "backupCount": 3,
 #         #     "formatter": "verbose",
 #         # },
-#         'loki': {
-#             'class': 'python_loki.LokiHandler',
-#             'url': os.getenv('LOKI_ENDPOINT'),
-#             'tags': {'application': 'crm_backend'},
-#             'version': '1',
-#         },
+#         # 'loki': {
+#         #     'class': 'python_loki.LokiHandler',
+#         #     'url': os.getenv('LOKI_ENDPOINT'),
+#         #     'tags': {'application': 'crm_backend'},
+#         #     'version': '1',
+#         # },
 #     },
 #     "root": {
 #         "handlers": ["console"],
@@ -209,10 +209,10 @@ MEDIA_ROOT = "/app/media"
 #             "level": "ERROR",
 #             "propagate": False,
 #         },
-#         'log_loki': {
-#             'handlers': ['loki'],
-#             'level': LOGLEVEL,
-#             'propagate': True,
-#         }
+#         # 'log_loki': {
+#         #     'handlers': ['loki'],
+#         #     'level': LOGLEVEL,
+#         #     'propagate': True,
+#         # }
 #     },
 # }
