@@ -54,6 +54,6 @@ jobs:
         DATABASE_URL: postgres://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@localhost:5432/crm_db
         SECRET_KEY: django-insecure-ci-test-key
         DEBUG: "1"
-        CI: "True"
+        # CI: "True"
       run: |
         poetry run python manage.py test
