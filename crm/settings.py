@@ -22,8 +22,8 @@ load_dotenv(dotenv_path=".env.db", override=True)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-IS_CI = bool(os.environ.get("CI")) or bool(os.environ.get("GITHUB_ACTIONS"))
-
+IS_CI = os.environ.get("GITHUB_ACTIONS")
+# os.environ.get("CI") or
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
