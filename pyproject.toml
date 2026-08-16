@@ -1,7 +1,7 @@
 [project]
 name = "crm"
 version = "1.1.0"
-description = "Пет-проект CRM системы"
+description = "Pet-проект CRM системы"
 authors = [
     {name = "Marina",email = "marina-a-zhukova@yandex.ru"}
 ]
@@ -28,6 +28,5 @@ build-backend = "poetry.core.masonry.api"
 dev = [
     "ruff (>=0.15.4,<0.16.0)",
     "bandit (>=1.9.4,<2.0.0)",
-    "darglint (>=1.8.1,<2.0.0)",
     "django-debug-toolbar (>=7.0.0,<8.0.0)",
 ]
