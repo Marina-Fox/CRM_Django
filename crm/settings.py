@@ -19,36 +19,49 @@ load_dotenv(dotenv_path=".env.app")
 load_dotenv(dotenv_path=".env.db", override=True)
 
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-IS_CI = bool(os.environ.get("CI")) or bool(os.environ.get("GITHUB_ACTIONS"))
+# Булевый флаг, определяющий, выполняется ли код в среде GitHub Actions.
+# Значение True устанавливается при запуске workflow GitHub Actions,
+# в остальных случаях значение равно False.
+# IS_CI = os.environ.get("GITHUB_ACTIONS") == "true"
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = "django-insecure-1l+3#&gp7lgoa#zdd6lj3h_zzkp#bcw@s-fv3_t!6v!!8gq9m("
 SECRET_KEY = os.getenv("SECRET_KEY")
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
+ALLOWED_HOSTS = [
+    host.strip() for host in os.getenv("ALLOWED_HOSTS", "").split(",") if host.strip()
+]
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", "True")
-
-ALLOWED_HOSTS = ["*"]
-
-
+# Настройка URL страницы входа и URL перенаправления пользователя после успешной аутентификации.
 LOGIN_REDIRECT_URL = "/"
 LOGIN_URL = "login"
 
-# # Включение HSTS и других мер безопасности
-# SECURE_SSL_REDIRECT = True
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SECURE = True
-# X_FRAME_OPTIONS = 'DENY'
+# Настройки безопасности.
+if not DEBUG:
+    # Открывать сайт только по HTTPS в течение указанного периода.
+    SECURE_HSTS_SECONDS = 3600
+    # Распространяет HSTS на все поддомены, только если все поддомены также поддерживают HTTPS.
+    # Если у домена нет поддоменов, практической пользы нет.
+    # SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    # Для включения в HSTS preload list
+    # SECURE_HSTS_PRELOAD = True
+    # Перенаправляет HTTP-запросы на HTTPS.
+    SECURE_SSL_REDIRECT = True
+    # Полностью запрещает отображение страниц в iframe.
+    X_FRAME_OPTIONS = "DENY"
+    # Для проксирующих серверов (nginx и др.)
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    # Разрешает передавать cookie сессии только по HTTPS.
+    SESSION_COOKIE_SECURE = True
+    # Разрешает передавать CSRF-cookie только по HTTPS.
+    CSRF_COOKIE_SECURE = True
+    # Дополнительные настройки cookies
+    SESSION_COOKIE_HTTPONLY = True  # Защита от XSS
+    CSRF_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = "Lax"  # Защита от CSRF
+    CSRF_COOKIE_SAMESITE = "Lax"
 
-# Application definition
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -94,7 +107,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "crm.wsgi.application"
-# ASGI_APPLICATION = 'crm.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
@@ -104,17 +116,6 @@ DATABASES = {
         env="DATABASE_URL", default="sqlite:///db.sqlite3"
     )
 }
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": os.getenv("POSTGRES_DB"),
-#         "USER": os.getenv("POSTGRES_USER"),
-#         "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
-#         "HOST": "db",
-#         "PORT": os.getenv("POSTGRES_PORT"),
-#     }
-# }
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -134,18 +135,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
 LANGUAGE_CODE = "ru-ru"
-
 TIME_ZONE = "Europe/Moscow"
-
 USE_I18N = True
-
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
