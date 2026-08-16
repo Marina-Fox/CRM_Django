@@ -8,7 +8,7 @@ __pycache__
 db
 # tests
 upload
-.env.template
+.env*
 nginx
 .vscode
 postgres_data

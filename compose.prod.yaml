@@ -1,0 +1,61 @@
+services:
+  db:
+    container_name: postgres
+    image: postgres:16
+    env_file:
+      - .env.db
+    ports:
+      - "5432:5432"
+    networks:
+      - net_app
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    container_name: app
+    image: marinafox/crm_backend:1.0.0
+    restart: unless-stopped
+    env_file:
+      - .env.app
+    ports:
+      - "8000:8000"
+    networks:
+      - net_app
+    command: >
+      sh -c "
+        python manage.py migrate --noinput &&
+        python manage.py create_groups &&
+        python manage.py create_superuser &&
+        gunicorn --bind 0.0.0.0:8000 crm.wsgi:application
+      "
+    volumes:
+      - ./dist/media:/app/media
+      - ./dist/static:/project/dist/static
+    depends_on:
+      db:
+        condition: service_healthy
+
+  nginx:
+    container_name: nginx
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+    - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    - ./dist:/usr/share/nginx/html:ro
+    depends_on:
+      app:
+        condition: service_started
+    networks:
+      - net_app
+
+networks:
+  net_app:
+
+volumes:
+  postgres_data:
