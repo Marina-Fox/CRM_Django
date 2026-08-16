@@ -29,14 +29,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = [host.strip() for host in os.getenv("ALLOWED_HOSTS", "").split(",") if host.strip()]
+ALLOWED_HOSTS = [
+    host.strip() for host in os.getenv("ALLOWED_HOSTS", "").split(",") if host.strip()
+]
 
 # Настройка URL страницы входа и URL перенаправления пользователя после успешной аутентификации.
 LOGIN_REDIRECT_URL = "/"
 LOGIN_URL = "login"
 
 # Настройки безопасности.
-if DEBUG != True:
+if not DEBUG:
     # Открывать сайт только по HTTPS в течение указанного периода.
     SECURE_HSTS_SECONDS = 3600
     # Распространяет HSTS на все поддомены, только если все поддомены также поддерживают HTTPS.
@@ -49,7 +51,7 @@ if DEBUG != True:
     # Полностью запрещает отображение страниц в iframe.
     X_FRAME_OPTIONS = "DENY"
     # Для проксирующих серверов (nginx и др.)
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
     # Разрешает передавать cookie сессии только по HTTPS.
     SESSION_COOKIE_SECURE = True
     # Разрешает передавать CSRF-cookie только по HTTPS.
@@ -57,8 +59,8 @@ if DEBUG != True:
     # Дополнительные настройки cookies
     SESSION_COOKIE_HTTPONLY = True  # Защита от XSS
     CSRF_COOKIE_HTTPONLY = True
-    SESSION_COOKIE_SAMESITE = 'Lax'  # Защита от CSRF
-    CSRF_COOKIE_SAMESITE = 'Lax'
+    SESSION_COOKIE_SAMESITE = "Lax"  # Защита от CSRF
+    CSRF_COOKIE_SAMESITE = "Lax"
 
 
 INSTALLED_APPS = [
