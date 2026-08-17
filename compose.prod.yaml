@@ -18,10 +18,11 @@ services:
 
   app_prod:
     container_name: app_prod
-    image: marinafox/crm_backend:1.0.0
+    image: marinafox/crm_backend:1.0.2
     restart: unless-stopped
     env_file:
       - .env.app
+      - .env.superuser
     ports:
       - "8000:8000"
     networks:
