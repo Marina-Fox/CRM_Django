@@ -21,6 +21,7 @@ services:
     build: .
     env_file:
       - .env.app
+      - .env.superuser
     ports:
       - "8000:8000"
     networks:
