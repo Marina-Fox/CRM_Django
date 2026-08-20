@@ -2,6 +2,7 @@ services:
   db:
     container_name: postgres
     image: postgres:16
+    restart: unless-stopped
     env_file:
       - .env.db
     ports:
@@ -44,6 +45,7 @@ services:
   nginx:
     container_name: nginx
     image: nginx:alpine
+    restart: unless-stopped
     ports:
       - "80:80"
     volumes:
