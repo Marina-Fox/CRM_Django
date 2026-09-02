@@ -19,7 +19,7 @@ services:
 
   app_prod:
     container_name: app_prod
-    image: marinafox/crm_backend:1.0.2
+    image: marinafox/crm_backend:1.0.3
     restart: unless-stopped
     env_file:
       - .env.app
